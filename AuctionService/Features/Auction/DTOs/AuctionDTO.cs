@@ -1,4 +1,4 @@
-﻿namespace AuctionService.DTOs
+﻿namespace AuctionService.Features.Auction.DTOs
 {
     public class AuctionDTO
     {
