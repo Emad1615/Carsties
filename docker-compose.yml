@@ -1,0 +1,25 @@
+services:
+  postgres:
+    image: postgres:18.1
+    container_name: auctions_postgres_db      
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgrespw}
+      POSTGRES_DB: ${POSTGRES_DB:-auctionsDb}
+    ports:
+      - "${DB_PORT:-5432}:5432"               
+    volumes:
+      - pgdata:/var/lib/postgresql            # recommended for 18+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-auctionsDb} || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  pgdata:
+    driver: local

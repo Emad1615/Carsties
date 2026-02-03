@@ -27,4 +27,13 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+try
+{
+    DbInitializer.DbInit(app);
+}
+catch (Exception e)
+{
+    Console.WriteLine($"Error during migration: {e}");
+}
+
 app.Run();
