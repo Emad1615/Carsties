@@ -7,7 +7,7 @@ namespace AuctionService.RequestHelpers
     {
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
-            if (validator is null) await next();
+            if (validator is null) return await next();
             var validationResult = await validator.ValidateAsync(request, cancellationToken);
             if (!validationResult.IsValid)
             {
