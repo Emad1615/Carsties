@@ -1,5 +1,5 @@
 using AuctionService.Data;
-using AuctionService.Features.Auction.Commands;
+using AuctionService.Features.Auctions.Commands;
 using AuctionService.Features.Auction.Validators;
 using AuctionService.Middleware;
 using AuctionService.RequestHelpers;

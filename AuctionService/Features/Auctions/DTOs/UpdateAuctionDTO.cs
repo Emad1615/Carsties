@@ -1,4 +1,4 @@
-﻿namespace AuctionService.Features.Auction.DTOs
+﻿namespace AuctionService.Features.Auctions.DTOs
 {
     public class UpdateAuctionDTO:BaseAuctionDTO
     {

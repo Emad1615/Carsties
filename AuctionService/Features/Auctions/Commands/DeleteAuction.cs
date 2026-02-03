@@ -1,7 +1,7 @@
 ﻿using AuctionService.Data;
 using MediatR;
 
-namespace AuctionService.Features.Auction.Commands
+namespace AuctionService.Features.Auctions.Commands
 {
     public class DeleteAuction
     {

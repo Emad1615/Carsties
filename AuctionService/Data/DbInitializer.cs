@@ -1,5 +1,4 @@
-﻿using AuctionService.Features.Auction.DTOs;
-using AuctionService.Entities;
+﻿using AuctionService.Entities;
 using AuctionService.Entities.Factories;
 using Microsoft.EntityFrameworkCore;
 

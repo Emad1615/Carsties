@@ -1,8 +1,8 @@
 ﻿using AuctionService.Data;
-using AuctionService.Features.Auction.DTOs;
+using AuctionService.Features.Auctions.DTOs;
 using MediatR;
 
-namespace AuctionService.Features.Auction.Commands
+namespace AuctionService.Features.Auctions.Commands
 {
     public class UpdateAuction
     {
