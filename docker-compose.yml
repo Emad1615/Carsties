@@ -19,7 +19,27 @@ services:
       timeout: 5s
       retries: 5
       start_period: 30s
-
+  mongo:
+    image: mongo:6.0
+    container_name: search_mongo_db      
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER:-root}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-mongopw}
+      MONGO_INITDB_DATABASE: ${MONGO_DB:-SearchBb}
+    ports:
+      - "${MONGO_PORT:-27017}:27017"               
+    volumes:
+      - mongodata:/data/db            # recommended for 18+
+    healthcheck:
+      test: ["CMD-SHELL", "mongo --username ${MONGO_USER:-root} --password ${MONGO_PASSWORD:-mongopw} --authenticationDatabase admin --eval \"db.adminCommand('ping')\" || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 volumes:
   pgdata:
+  mongodata:
     driver: local
