@@ -19,7 +19,7 @@ namespace AuctionService.Features.Auctions.Queries
             public async Task<Result<AuctionDTO>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var auction = await context.Auctions
-                    .Where(a => a.Id == request.Id)
+                    .Where(a => a.Id == request.Id && !a.IsDeleted)
                     .ProjectTo<AuctionDTO>(mapper.ConfigurationProvider)
                     .FirstOrDefaultAsync(cancellationToken);
                 if (auction == null)

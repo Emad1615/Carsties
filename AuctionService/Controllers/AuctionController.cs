@@ -30,7 +30,7 @@ namespace AuctionService.Controllers
         {
             return HandleResult(await Mediator.Send(new UpdateAuction.Command { AuctionDTO = auctionDTO }, cancellationToken));
         }
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<ActionResult<Unit>> DeleteAuction(int id, CancellationToken cancellationToken)
         {
             return HandleResult(await Mediator.Send(new DeleteAuction.Command { Id = id }, cancellationToken));

@@ -2,6 +2,7 @@
 using AuctionService.Features.Auctions.DTOs;
 using AuctionService.RequestHelpers;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace AuctionService.Features.Auctions.Commands
 {
@@ -15,7 +16,8 @@ namespace AuctionService.Features.Auctions.Commands
         {
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var auction = await context.Auctions.FindAsync(request.AuctionDTO.Id, cancellationToken);
+                var auction = await context.Auctions.Include(x=>x.Item).FirstOrDefaultAsync(x => x.Id == request.AuctionDTO.Id, cancellationToken);
+                auction.UpdateAuction(request.AuctionDTO.ReservePrice, request.AuctionDTO.AuctionEnd, "SYSTEM");
                 auction.UpdateItem(request.AuctionDTO.Make, request.AuctionDTO.Model, request.AuctionDTO.Color, request.AuctionDTO.Mileage, request.AuctionDTO.Year, "SYSTEM");
                 await context.SaveChangesAsync(cancellationToken);
                 return Result<Unit>.Success(Unit.Value);

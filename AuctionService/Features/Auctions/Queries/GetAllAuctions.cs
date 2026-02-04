@@ -17,7 +17,7 @@ namespace AuctionService.Features.Auctions.Queries
         {
             public async Task<Result<List<AuctionDTO>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var auctions = await context.Auctions
+                var auctions = await context.Auctions.Where(x=>!x.IsDeleted)
                     .AsNoTracking()
                     .ProjectTo<AuctionDTO>(mapper.ConfigurationProvider)
                     .ToListAsync();

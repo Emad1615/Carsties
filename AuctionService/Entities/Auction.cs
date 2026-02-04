@@ -14,9 +14,6 @@
         private Auction() : base("SYSTEM") { }
         public Auction(string createdBy, int reservePrice, string seller, DateTime auctionEnd) : base(createdBy)
         {
-            if (auctionEnd <= DateTime.UtcNow)
-                throw new InvalidOperationException("Auction end must be in the future");
-
             ReservePrice = reservePrice;
             Seller = seller ?? string.Empty;
             AuctionEnd = auctionEnd;
@@ -32,6 +29,12 @@
             _item = item;
         }
 
+        public void UpdateAuction(int reservePrice, DateTime auctionEnd,string modifiedBy)
+        {
+            ReservePrice = reservePrice;
+            AuctionEnd = auctionEnd;
+            SetModified(modifiedBy);
+        }
         public void UpdateItem(string make, string model, string color, int mileage, int year, string modifiedBy)
         {
             if (_item is null)

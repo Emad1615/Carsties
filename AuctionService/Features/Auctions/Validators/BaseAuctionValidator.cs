@@ -7,6 +7,12 @@ namespace AuctionService.Features.Auction.Validators
     {
         public BaseAuctionValidator(Func<T, DTO> selector)
         {
+            RuleFor(x => selector(x).ReservePrice).Cascade(CascadeMode.Stop)
+               .NotEmpty().WithMessage("ReservePrice is required.")
+               .GreaterThan(0).WithMessage("ReservePrice cannot be negative.");
+            RuleFor(x => selector(x).AuctionEnd).Cascade(CascadeMode.Stop)
+                .GreaterThan(DateTime.UtcNow).WithMessage("AuctionEnd must be a future date.")
+                .NotEmpty().WithMessage("AuctionEnd is required.");
             RuleFor(x => selector(x).Color).Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage("Color is required.")
                 .MaximumLength(50).WithMessage("Color cannot exceed 50 characters.");
@@ -22,6 +28,8 @@ namespace AuctionService.Features.Auction.Validators
             RuleFor(x => selector(x).Mileage).Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage("Mileage is required.")
                 .GreaterThanOrEqualTo(0).WithMessage("Mileage cannot be negative.");
+            RuleFor(x => selector(x).ImageUrl)
+                .NotEmpty().WithMessage("ImageUrl is required.");
         }
     }
 }

@@ -3,6 +3,7 @@
     public class AuctionDTO
     {
         public int Id { get; set; }
+        public string ReservePrice { get; set; }
         public string Seller { get; set; }
         public string Winner { get; set; }
         public string Status { get; set; }
