@@ -11,9 +11,9 @@ namespace AuctionService.Controllers
     public class AuctionController : BaseApiController
     {
         [HttpGet]
-        public async Task<ActionResult<List<AuctionDTO>>> GetAuctions(CancellationToken cancellationToken)
+        public async Task<ActionResult<List<AuctionDTO>>> GetAuctions(string date, CancellationToken cancellationToken)
         {
-            return HandleResult(await Mediator.Send(new GetAllAuctions.Query { }, cancellationToken));
+            return HandleResult(await Mediator.Send(new GetAllAuctions.Query { Date = date }, cancellationToken));
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<AuctionDTO>> GetAuction(int id, CancellationToken cancellationToken)

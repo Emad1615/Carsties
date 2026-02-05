@@ -1,6 +1,7 @@
 ﻿using MongoDB.Driver;
 using MongoDB.Entities;
 using SearchService.Models;
+using SearchService.Services;
 using System.Text.Json;
 
 namespace SearchService.Data
@@ -18,16 +19,27 @@ namespace SearchService.Data
                 .Key(x => x.Year, KeyType.Descending)
                 .CreateAsync();
 
-            var count = await DB.Default.CountAsync<Item>();
-            if (count == 0)
+            using var scope= app.Services.CreateScope();
+            var service = scope.ServiceProvider;
+            var auctionService=service.GetRequiredService<AuctionServiceHttpClient>();
+            var auctions = await auctionService.GetItemFRomObjectToSearchDb();
+            if (auctions.Count() > 0)
             {
-                Console.WriteLine("Seeding initial data into the database...");
-                var itemData = await File.ReadAllTextAsync("Data/auctions.json");
-                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-                var items = JsonSerializer.Deserialize<List<Item>>(itemData, options);
-                await DB.Default.SaveAsync(items);
+                Console.WriteLine("Updating search database with new auction items...");
+                await DB.Default.SaveAsync(auctions);
             }
-            await Task.CompletedTask;
+
+            #region Old seeding logic from json file, now replaced by fetching data from Auction Service
+            //var count = await DB.Default.CountAsync<Item>();
+            //if (count == 0)
+            //{
+            //    Console.WriteLine("Seeding initial data into the database...");
+            //    var itemData = await File.ReadAllTextAsync("Data/auctions.json");
+            //    var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            //    var items = JsonSerializer.Deserialize<List<Item>>(itemData, options);
+            //    await DB.Default.SaveAsync(items);
+            //}
+            #endregion
         }
     }
 }
