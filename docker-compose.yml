@@ -39,7 +39,28 @@ services:
       timeout: 5s
       retries: 5
       start_period: 30s
+  rabbitmq:
+    image: rabbitmq:4-management-alpine
+    container_name: auctions_rabbitmq
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-guest}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-guest}
+    ports:
+      - "${RABBITMQ_PORT:-5672}:5672"       # RabbitMQ main port
+      - "${RABBITMQ_MANAGEMENT_PORT:-15672}:15672" # Management UI port
+    volumes:
+      -  rabbitmq_data:/var/lib/rabbitmq            # recommended for 18+
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 volumes:
   pgdata:
   mongodata:
+  rabbitmq_data:
     driver: local

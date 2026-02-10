@@ -6,6 +6,7 @@ using AuctionService.RequestHelpers;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,14 @@ builder.Services.AddMediatR(opt =>
 
 builder.Services.AddValidatorsFromAssemblyContaining<CreateAuctionValidator>();
 
+var root = Directory.GetParent(Directory.GetCurrentDirectory())!.FullName;
+
+builder.Services.AddMassTransit(x => {
+    x.UsingRabbitMq((context,cfg)=> {
+        cfg.SetLicenseLocation(Path.Combine(root, "license.txt"));
+        cfg.ConfigureEndpoints(context);
+    });
+});
 
 builder.Services.AddTransient<ExceptionMiddleware>();
 
