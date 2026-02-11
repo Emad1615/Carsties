@@ -3,6 +3,8 @@ using AuctionService.Entities;
 using AuctionService.Features.Auctions.DTOs;
 using AuctionService.RequestHelpers;
 using AutoMapper;
+using Contracts;
+using MassTransit;
 using MediatR;
 
 namespace AuctionService.Features.Auctions.Commands
@@ -13,7 +15,7 @@ namespace AuctionService.Features.Auctions.Commands
         {
             public CreateAuctionDTO AuctionDTO { get; set; }
         }
-        public class Handler(AuctionDbContext context, IMapper mapper) : IRequestHandler<Command, Result<AuctionDTO>>
+        public class Handler(AuctionDbContext context, IMapper mapper, IPublishEndpoint publishEndpoint) : IRequestHandler<Command, Result<AuctionDTO>>
         {
             public async Task<Result<AuctionDTO>> Handle(Command request, CancellationToken cancellationToken)
             {
@@ -21,7 +23,9 @@ namespace AuctionService.Features.Auctions.Commands
                 auction.AssignItem(mapper.Map<Item>(request.AuctionDTO));
                 await context.Auctions.AddAsync(auction, cancellationToken);
                 await context.SaveChangesAsync(cancellationToken);
-                return Result<AuctionDTO>.Success(mapper.Map<AuctionDTO>(auction));
+                var newAuction = mapper.Map<AuctionDTO>(auction);
+                await publishEndpoint.Publish(mapper.Map<AuctionCreated>(newAuction), cancellationToken);
+                return Result<AuctionDTO>.Success(newAuction);
             }
         }
     }
