@@ -23,7 +23,6 @@ builder.Services.AddMassTransit(x =>
 
     x.UsingRabbitMq((context, cfg) =>
     {
-        cfg.SetLicenseLocation(Path.Combine(root, "license.txt"));
         cfg.ConfigureEndpoints(context);
     });
 });
