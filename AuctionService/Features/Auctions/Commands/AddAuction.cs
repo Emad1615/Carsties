@@ -22,9 +22,12 @@ namespace AuctionService.Features.Auctions.Commands
                 var auction = new Entities.Auction("SYSTEM", request.AuctionDTO.ReservePrice, "SYSTEM", request.AuctionDTO.AuctionEnd);
                 auction.AssignItem(mapper.Map<Item>(request.AuctionDTO));
                 await context.Auctions.AddAsync(auction, cancellationToken);
-                await context.SaveChangesAsync(cancellationToken);
+
                 var newAuction = mapper.Map<AuctionDTO>(auction);
                 await publishEndpoint.Publish(mapper.Map<AuctionCreated>(newAuction), cancellationToken);
+
+                await context.SaveChangesAsync(cancellationToken);
+
                 return Result<AuctionDTO>.Success(newAuction);
             }
         }

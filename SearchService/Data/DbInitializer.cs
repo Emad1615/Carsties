@@ -19,14 +19,18 @@ namespace SearchService.Data
                 .Key(x => x.Year, KeyType.Descending)
                 .CreateAsync();
 
-            using var scope= app.Services.CreateScope();
+            using var scope = app.Services.CreateScope();
             var service = scope.ServiceProvider;
-            var auctionService=service.GetRequiredService<AuctionServiceHttpClient>();
+            var auctionService = service.GetRequiredService<AuctionServiceHttpClient>();
             var auctions = await auctionService.GetItemFRomObjectToSearchDb();
             if (auctions.Count() > 0)
             {
-                Console.WriteLine("Updating search database with new auction items...");
-                await DB.Default.SaveAsync(auctions);
+                var count = await DB.Default.CountAsync<Item>();
+                if (count == 0)
+                {
+                    Console.WriteLine("Updating search database with new auction items...");
+                    await DB.Default.SaveAsync(auctions);
+                }
             }
 
             #region Old seeding logic from json file, now replaced by fetching data from Auction Service

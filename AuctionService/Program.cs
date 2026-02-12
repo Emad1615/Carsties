@@ -7,6 +7,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MassTransit;
+using AuctionService.Consumers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,7 +32,19 @@ builder.Services.AddValidatorsFromAssemblyContaining<CreateAuctionValidator>();
 
 var root = Directory.GetParent(Directory.GetCurrentDirectory())!.FullName;
 
-builder.Services.AddMassTransit(x => {
+builder.Services.AddMassTransit(x=> {
+
+    // for outbox implementation, we need to add the outbox repository to the db context and then configure the outbox in the mass transit configuration. status rabbitMQ down!!
+    x.AddEntityFrameworkOutbox<AuctionDbContext>(d =>
+    {
+        d.QueryDelay = TimeSpan.FromSeconds(5);
+        d.UsePostgres();
+        d.UseBusOutbox();
+    });
+
+    x.AddConsumersFromNamespaceContaining<AuctionCreatedFaultConsumer>();
+    x.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("auction", false));
+
     x.UsingRabbitMq((context,cfg)=> {
         cfg.ConfigureEndpoints(context);
     });
