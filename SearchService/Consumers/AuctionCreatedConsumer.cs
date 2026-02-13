@@ -12,6 +12,8 @@ namespace SearchService.Consumers
         {
             Console.WriteLine($"Received AuctionCreated event for Slug_Id: {context.Message.Slug_Id}");
             var item = mapper.Map<Item>(context.Message);
+            if(context.Message.Model=="Emad")
+                throw  new ArgumentException("Invalid model: Emad");
             await DB.Default.SaveAsync(item);
         }
     }
