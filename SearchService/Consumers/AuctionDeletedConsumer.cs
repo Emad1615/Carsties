@@ -16,8 +16,6 @@ namespace SearchService.Consumers
 
             var db = await DB.InitAsync("SearchBb");
             await db.DeleteAsync<Item>(item.Slug_Id);
-
-            await Task.CompletedTask;
         }
     }
 }

@@ -16,14 +16,7 @@ namespace SearchService.Consumers
 
             var db = await DB.InitAsync("SearchBb");
             await db.Update<Item>().Match(x => x.Slug_Id == item.Slug_Id)
-                  .Modify(x => x.Set(y => y.Color, item.Color))
-                  .Modify(x => x.Set(y => y.Make, item.Make))
-                  .Modify(x => x.Set(y => y.Model, item.Model))
-                  .Modify(x => x.Set(y => y.Year, item.Year))
-                  .Modify(x => x.Set(y => y.Mileage, item.Mileage))
-                  .ExecuteAsync();
-
-            await Task.CompletedTask;
+                .ModifyOnly(x => new { x.Color, x.Make, x.Model, x.Year, x.Mileage }, item).ExecuteAsync();
         }
     }
 }
