@@ -23,11 +23,12 @@ builder.Services.AddMassTransit(x =>
 
     x.UsingRabbitMq((context, cfg) =>
     {
-        cfg.ReceiveEndpoint("search-auction-created", e =>
-        {
-            e.UseMessageRetry(r => r.Interval(5, TimeSpan.FromSeconds(5)));
-            e.ConfigureConsumer<AuctionCreatedConsumer>(context);
-        });
+        cfg.UseMessageRetry(r => r.Interval(5, TimeSpan.FromSeconds(5)));
+
+        cfg.ReceiveEndpoint("search-auction-created", e => { e.ConfigureConsumer<AuctionCreatedConsumer>(context); });
+        cfg.ReceiveEndpoint("search-auction-updated", e => { e.ConfigureConsumer<AuctionUpdatedConsumer>(context); });
+        cfg.ReceiveEndpoint("search-auction-deleted", e => { e.ConfigureConsumer<AuctionDeletedConsumer>(context); });
+
         cfg.ConfigureEndpoints(context);
     });
 });

@@ -34,7 +34,7 @@ namespace SearchService.Services
 
             if (!doc.RootElement.TryGetProperty("data", out var jsonElement))
             {
-                return JsonSerializer.Deserialize<List<Item>>(jsonElement, oprions);
+                return JsonSerializer.Deserialize<List<Item>>(jsonElement.GetRawText(), oprions);
             }
             var items = JsonSerializer.Deserialize<List<Item>>(jsonElement.GetRawText(), oprions);
             return items;

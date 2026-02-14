@@ -49,9 +49,8 @@ namespace AuctionService.Data
                                     "https://cdn.pixabay.com/photo/2012/11/02/13/02/car-63930_960_720.jpg")
                             ),
 
-                            // 4 Mercedes SLK (كانت ReserveNotMet)
 
-                            // 5 BMW X1
+                            // 4 BMW X1
                             AuctionFactory.Create(
                                 "SYSTEM",
                                 20000,
@@ -61,7 +60,7 @@ namespace AuctionService.Data
                                     "https://cdn.pixabay.com/photo/2017/08/31/05/47/bmw-2699538_960_720.jpg")
                             ),
 
-                            // 6 Ferrari Spider
+                            // 5 Ferrari Spider
                             AuctionFactory.Create(
                                 "SYSTEM",
                                 20000,
@@ -71,7 +70,7 @@ namespace AuctionService.Data
                                     "https://cdn.pixabay.com/photo/2017/11/09/01/49/ferrari-458-spider-2932191_960_720.jpg")
                             ),
 
-                            // 7 Ferrari F-430
+                            // 6 Ferrari F-430
                             AuctionFactory.Create(
                                 "SYSTEM",
                                 150000,
@@ -81,7 +80,7 @@ namespace AuctionService.Data
                                     "https://cdn.pixabay.com/photo/2017/11/08/14/39/ferrari-f430-2930661_960_720.jpg")
                             ),
 
-                            // 8 Audi R8
+                            // 7 Audi R8
                             AuctionFactory.Create(
                                 "SYSTEM",
                                 0,
@@ -91,7 +90,7 @@ namespace AuctionService.Data
                                     "https://cdn.pixabay.com/photo/2019/12/26/20/50/audi-r8-4721217_960_720.jpg")
                             ),
 
-                            // 9 Audi TT
+                            // 8 Audi TT
                             AuctionFactory.Create(
                                 "SYSTEM",
                                 20000,
@@ -101,7 +100,7 @@ namespace AuctionService.Data
                                     "https://cdn.pixabay.com/photo/2016/09/01/15/06/audi-1636320_960_720.jpg")
                             ),
 
-                            // 10 Ford Model T
+                            // 9 Ford Model T
                             AuctionFactory.Create(
                                 "SYSTEM",
                                 20000,
