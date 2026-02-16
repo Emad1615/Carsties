@@ -1,4 +1,5 @@
-﻿using Duende.IdentityServer.Models;
+﻿using Duende.IdentityModel;
+using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
 using IdentityService.Models;
 using Microsoft.AspNetCore.Identity;
@@ -17,10 +18,10 @@ namespace IdentityService.Service
             var newClaims = new Claim[]
             {
                 new Claim(ClaimTypes.Email,user.Email!),
-                new Claim("Name",user.UserName!),
+                new Claim("username",user.UserName!),
             };
             context.IssuedClaims.AddRange(newClaims);
-            context.IssuedClaims.Add(existingClaims.FirstOrDefault(x => x.Type == ClaimTypes.Name)!);
+            context.IssuedClaims.Add(existingClaims.FirstOrDefault(x => x.Type == JwtClaimTypes.Name)!);
         }
 
         public Task IsActiveAsync(IsActiveContext context)
