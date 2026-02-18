@@ -19,6 +19,12 @@ namespace AuctionService.Controllers
                     Message = result.Error,
                     result.Status
                 });
+            if (!result.IsSuccess && result.Status == 403)
+                return BadRequest(new
+                {
+                    Message = result.Error,
+                    result.Status
+                });
             if (!result.IsSuccess && result.Status == 400)
                 return BadRequest(new
                 {

@@ -26,7 +26,7 @@ namespace AuctionService.Features.Auctions.Commands
                 // we don't want to end up with an auction in the database that doesn't have a corresponding event published.
 
                 var transaction =await context.Database.BeginTransactionAsync(cancellationToken);
-                var auction = new Entities.Auction("SYSTEM", request.AuctionDTO.ReservePrice, "SYSTEM", request.AuctionDTO.AuctionEnd);
+                var auction = new Entities.Auction(request.AuctionDTO.CreatedBy, request.AuctionDTO.ReservePrice, request.AuctionDTO.Seller, request.AuctionDTO.AuctionEnd);
                 auction.AssignItem(mapper.Map<Item>(request.AuctionDTO));
                 await context.Auctions.AddAsync(auction, cancellationToken);
               

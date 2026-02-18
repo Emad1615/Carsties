@@ -67,17 +67,18 @@ internal static class HostingExtensions
                 options.Events.RaiseSuccessEvents = true;
 
                 // Use a large chunk size for diagnostic data in development where it will be redirected to a local file.
-                if (builder.Environment.IsDevelopment())
-                {
-                    options.Diagnostics.ChunkSize = 1024 * 1024 * 10; // 10 MB
-                }
+                //if (builder.Environment.IsDevelopment())
+                //{
+                //    options.Diagnostics.ChunkSize = 1024 * 1024 * 10; // 10 MB
+                //}
             })
             .AddInMemoryIdentityResources(Config.IdentityResources)
             .AddInMemoryApiScopes(Config.ApiScopes)
             .AddInMemoryClients(Config.Clients)
             .AddAspNetIdentity<ApplicationUser>()
             .AddProfileService<CustomProfileService>()
-            .AddLicenseSummary();
+            .AddDeveloperSigningCredential();
+            //.AddLicenseSummary();
             
 
         builder.Services.ConfigureApplicationCookie(options =>
@@ -85,24 +86,24 @@ internal static class HostingExtensions
             options.Cookie.SameSite = SameSiteMode.Lax;
         });
 
-        builder.Services.AddAuthentication()
-            .AddOpenIdConnect("oidc", "Sign-in with demo.duendesoftware.com", options =>
-            {
-                options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
-                options.SignOutScheme = IdentityServerConstants.SignoutScheme;
-                options.SaveTokens = true;
+        builder.Services.AddAuthentication();
+            //.AddOpenIdConnect("oidc", "Sign-in with demo.duendesoftware.com", options =>
+            //{
+            //    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+            //    options.SignOutScheme = IdentityServerConstants.SignoutScheme;
+            //    options.SaveTokens = true;
 
-                options.Authority = "https://demo.duendesoftware.com";
-                options.ClientId = "interactive.confidential";
-                options.ClientSecret = "secret";
-                options.ResponseType = "code";
+            //    options.Authority = "https://demo.duendesoftware.com";
+            //    options.ClientId = "interactive.confidential";
+            //    options.ClientSecret = "secret";
+            //    options.ResponseType = "code";
 
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    NameClaimType = "name",
-                    RoleClaimType = "role"
-                };
-            });
+            //    options.TokenValidationParameters = new TokenValidationParameters
+            //    {
+            //        NameClaimType = "name",
+            //        RoleClaimType = "role"
+            //    };
+            //});
 
         return builder.Build();
     }

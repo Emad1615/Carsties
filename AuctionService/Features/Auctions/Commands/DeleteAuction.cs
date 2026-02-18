@@ -13,13 +13,15 @@ namespace AuctionService.Features.Auctions.Commands
         public class Command : IRequest<Result<Unit>>
         {
             public int Id { get; set; }
+            public string DeletedBy { get; set; }
         }
         public class Handler(AuctionDbContext context,IPublishEndpoint publishEndpoint,IMapper mapper) : IRequestHandler<Command, Result<Unit>>
         {
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var auction = await context.Auctions.FindAsync(request.Id, cancellationToken);
-                auction.SoftDelete("SYSTEM");
+                    if (auction.CreatedBy != request.DeletedBy) return Result<Unit>.Failure("Access denied. Only the auction owner can delete this resource.", 403);
+                auction.SoftDelete(request.DeletedBy);
 
                 var deletedAuction = mapper.Map<AuctionDTO>(auction);
                 await publishEndpoint.Publish(mapper.Map<AuctionDeleted>(deletedAuction), cancellationToken);

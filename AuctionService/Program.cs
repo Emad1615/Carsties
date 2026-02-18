@@ -1,13 +1,16 @@
+﻿using AuctionService.Consumers;
 using AuctionService.Data;
-using AuctionService.Features.Auctions.Commands;
 using AuctionService.Features.Auction.Validators;
+using AuctionService.Features.Auctions.Commands;
 using AuctionService.Middleware;
 using AuctionService.RequestHelpers;
 using FluentValidation;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
 using MassTransit;
-using AuctionService.Consumers;
+using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,7 +33,50 @@ builder.Services.AddMediatR(opt =>
 
 builder.Services.AddValidatorsFromAssemblyContaining<CreateAuctionValidator>();
 
-var root = Directory.GetParent(Directory.GetCurrentDirectory())!.FullName;
+//builder.Services.AddAuthentication(options =>
+//{
+//    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+//    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+//}).AddJwtBearer(options =>
+//{
+//    options.Authority = builder.Configuration["IdentityServiceUrl"];
+//    options.RequireHttpsMetadata = false;
+//    options.SaveToken = true;
+
+//    options.TokenValidationParameters = new TokenValidationParameters
+//    {
+//        ValidateIssuer = true,
+//        ValidIssuer = builder.Configuration["IdentityServiceUrl"],
+//        ValidateAudience = false,
+//        ValidateIssuerSigningKey = true,
+//        NameClaimType = "username",
+//    };
+//});
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority = "http://localhost:5001";
+        options.RequireHttpsMetadata = false;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateAudience = false,
+            ValidateIssuer = false, // عطل هذا مؤقتاً
+            ValidateIssuerSigningKey = false, // عطل هذا مؤقتاً للتجربة
+            SignatureValidator = delegate (string token, TokenValidationParameters parameters)
+            {
+                var jwt = new Microsoft.IdentityModel.JsonWebTokens.JsonWebToken(token);
+                return jwt;
+            },
+            NameClaimType = "username",
+        };
+
+        // ده السطر السحري اللي بيحل مشاكل الاتصال المحلي بين الخدمات
+        options.BackchannelHttpHandler = new HttpClientHandler
+        {
+            ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+        };
+    });
 
 builder.Services.AddMassTransit(x=> {
 
@@ -53,7 +99,6 @@ builder.Services.AddMassTransit(x=> {
 builder.Services.AddTransient<ExceptionMiddleware>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionMiddleware>();
@@ -62,6 +107,7 @@ app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
