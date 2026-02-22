@@ -9,6 +9,7 @@ using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -50,7 +51,7 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = false,
         SignatureValidator = delegate (string token, TokenValidationParameters parameters)
         {
-            var jwt = new Microsoft.IdentityModel.JsonWebTokens.JsonWebToken(token);
+            var jwt = new JsonWebToken(token);
             return jwt;
         },
         NameClaimType = "username",
