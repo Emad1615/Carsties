@@ -33,50 +33,57 @@ builder.Services.AddMediatR(opt =>
 
 builder.Services.AddValidatorsFromAssemblyContaining<CreateAuctionValidator>();
 
-//builder.Services.AddAuthentication(options =>
-//{
-//    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-//    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-//}).AddJwtBearer(options =>
-//{
-//    options.Authority = builder.Configuration["IdentityServiceUrl"];
-//    options.RequireHttpsMetadata = false;
-//    options.SaveToken = true;
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.Authority = builder.Configuration["IdentityServiceUrl"];
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
 
-//    options.TokenValidationParameters = new TokenValidationParameters
-//    {
-//        ValidateIssuer = true,
-//        ValidIssuer = builder.Configuration["IdentityServiceUrl"],
-//        ValidateAudience = false,
-//        ValidateIssuerSigningKey = true,
-//        NameClaimType = "username",
-//    };
-//});
-
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
+    options.TokenValidationParameters = new TokenValidationParameters
     {
-        options.Authority = "http://localhost:5001";
-        options.RequireHttpsMetadata = false;
-        options.TokenValidationParameters = new TokenValidationParameters
+        ValidateAudience = false,
+        ValidateIssuer = false,
+        ValidateIssuerSigningKey = false,
+        SignatureValidator = delegate (string token, TokenValidationParameters parameters)
         {
-            ValidateAudience = false,
-            ValidateIssuer = false, // عطل هذا مؤقتاً
-            ValidateIssuerSigningKey = false, // عطل هذا مؤقتاً للتجربة
-            SignatureValidator = delegate (string token, TokenValidationParameters parameters)
-            {
-                var jwt = new Microsoft.IdentityModel.JsonWebTokens.JsonWebToken(token);
-                return jwt;
-            },
-            NameClaimType = "username",
-        };
+            var jwt = new Microsoft.IdentityModel.JsonWebTokens.JsonWebToken(token);
+            return jwt;
+        },
+        NameClaimType = "username",
+        RoleClaimType = "role",
+    };
+});
 
-        // ده السطر السحري اللي بيحل مشاكل الاتصال المحلي بين الخدمات
-        options.BackchannelHttpHandler = new HttpClientHandler
-        {
-            ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
-        };
-    });
+#region another code for authentication, this code is for testing purposes only and should not be used in production because it disables important security checks like issuer and signing key validation. it's here just to help you test the authentication flow without needing a fully configured identity server. remember to remove or properly configure this before deploying to production.
+//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+//    .AddJwtBearer(options =>
+//    {
+//        options.Authority = "http://localhost:5001";
+//        options.RequireHttpsMetadata = false;
+//        options.TokenValidationParameters = new TokenValidationParameters
+//        {
+//            ValidateAudience = false,
+//            ValidateIssuer = false, // عطل هذا مؤقتاً
+//            ValidateIssuerSigningKey = false, // عطل هذا مؤقتاً للتجربة
+//            SignatureValidator = delegate (string token, TokenValidationParameters parameters)
+//            {
+//                var jwt = new Microsoft.IdentityModel.JsonWebTokens.JsonWebToken(token);
+//                return jwt;
+//            },
+//            NameClaimType = "username",
+//        };
+
+//        // ده السطر السحري اللي بيحل مشاكل الاتصال المحلي بين الخدمات
+//        options.BackchannelHttpHandler = new HttpClientHandler
+//        {
+//            ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+//        };
+//    });
+#endregion
 
 builder.Services.AddMassTransit(x=> {
 

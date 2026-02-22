@@ -8,5 +8,7 @@
         public string Model { get; set; }
         public int Year { get; set; }
         public int Mileage { get; set; }
+        public int ReservePrice { get; set; }
+        public DateTime AuctionEnd { get; set; }
     }
 }

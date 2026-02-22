@@ -15,7 +15,8 @@ namespace SearchService.Consumers
             var item = mapper.Map<AuctionDeleted>(context.Message);
 
             var db = await DB.InitAsync("SearchBb");
-            await db.DeleteAsync<Item>(item.Slug_Id);
+
+            await db.DeleteAsync<Item>(x => x.Slug_Id == context.Message.Slug_Id);
         }
     }
 }
