@@ -6,7 +6,7 @@
         public string Seller { get; private set; } = string.Empty;
         public string Winner { get; private set; } = string.Empty;
         public int SoldAmount { get; private set; }
-        public int CurrentHighBid { get; private set; }
+        public int? CurrentHighBid { get; private set; }
         public Status Status { get; private set; }
         public DateTime AuctionEnd { get; private set; }
         private Item _item;
@@ -29,7 +29,7 @@
             _item = item;
         }
 
-        public void UpdateAuction(int reservePrice, DateTime auctionEnd,string modifiedBy)
+        public void UpdateAuction(int reservePrice, DateTime auctionEnd, string modifiedBy)
         {
             ReservePrice = reservePrice;
             AuctionEnd = auctionEnd;
@@ -40,6 +40,25 @@
             if (_item is null)
                 throw new ArgumentNullException("No Item Assigned to auction");
             _item.Update(make, model, color, mileage, year, modifiedBy);
+        }
+
+        public void FinishAuction(int soldAmount, string winner, bool itemSold)
+        {
+            if (itemSold)
+            {
+                SoldAmount = soldAmount;
+                Winner = winner;
+                Status = Status.Finished;
+            }
+            else
+            {
+                Status = Status.ReserveNotMet;
+            }
+        }
+        public void BidPlaced(int currentHighBid, string bidStatus)
+        {
+            if (CurrentHighBid == null || bidStatus.Contains("Accepted") && currentHighBid > CurrentHighBid)
+                CurrentHighBid = currentHighBid;
         }
 
     }

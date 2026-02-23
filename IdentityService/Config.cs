@@ -20,19 +20,7 @@ public static class Config
     public static IEnumerable<Client> Clients =>
         new Client[]
         {
-            // m2m client credentials flow client
-            //new Client
-            //{
-            //    ClientId = "m2m.client",
-            //    ClientName = "Client Credentials Client",
-
-            //    AllowedGrantTypes = GrantTypes.ClientCredentials,
-            //    ClientSecrets = { new Secret("511536EF-F270-4058-80CA-1C89C192F69A".Sha256()) },
-
-            //    AllowedScopes = { "scope1" }
-            //},
-
-            // interactive client using code flow + pkce
+            // interactive client using code flow + pkce for postman testing
             new Client
             {
                 ClientId = "postman",
@@ -42,5 +30,19 @@ public static class Config
                 RedirectUris = { "https://getpostman.com/oauth/callback" },
                 AllowedScopes = { "openid", "profile", "auctionApp" }
             },
+            // interactive client using code flow + pkce  for frontend application
+            new Client{
+
+                ClientName="nextApp",
+                ClientId="nextApp",
+                ClientSecrets={ new Secret("secret".Sha256())},
+                AllowedGrantTypes=GrantTypes.CodeAndClientCredentials,
+                RedirectUris={ "https://localhost:3000/api/auth/callback/id-server" },
+                AllowedScopes={ "openid", "profile", "auctionApp" },
+                AllowOfflineAccess=true,
+                RequirePkce=false,
+                AccessTokenLifetime=3600*24*30
+
+            }
         };
 }

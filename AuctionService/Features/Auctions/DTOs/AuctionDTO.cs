@@ -7,6 +7,7 @@
         public string Seller { get; set; }
         public string Winner { get; set; }
         public string Status { get; set; }
+        public int? CurrentHighBid { get; private set; }
         public DateTime AuctionEnd { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? ModifiedAt { get; set; }

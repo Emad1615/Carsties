@@ -100,6 +100,9 @@ builder.Services.AddMassTransit(x=> {
     x.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("auction", false));
 
     x.UsingRabbitMq((context,cfg)=> {
+        cfg.UseMessageRetry(r => r.Interval(5,TimeSpan.FromSeconds(5)));
+        cfg.ReceiveEndpoint("auction-auction-finished", e => { e.ConfigureConsumer<AuctionFinishedConsumer>(context); });
+        cfg.ReceiveEndpoint("auction-bid-placed", e => { e.ConfigureConsumer<BidPlacedConsumer>(context); });
         cfg.ConfigureEndpoints(context);
     });
 });
