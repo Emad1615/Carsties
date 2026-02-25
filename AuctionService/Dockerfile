@@ -1,7 +1,5 @@
-﻿FROM mcr/microsoft/dotnet/sdk:8.0 AS build
+﻿FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
-
-# Copy the project file and restore dependencies
 
 COPY Carsties.sln ./
 COPY AuctionService/AuctionService.csproj ./src/AuctionService/
@@ -9,8 +7,12 @@ COPY Contracts/Contracts.csproj ./src/Contracts/
 
 RUN dotnet restore ./src/AuctionService/AuctionService.csproj
 
-# Copy all resources
-COPY ..	
-WORKDIR /app/src/AuctionService
-RUN dotnet publish -c Release -o /app/publish
+COPY . . 
+RUN dotnet publish AuctionService/AuctionService.csproj -c Release -o /app/publish
 
+# Runtime Stage
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+WORKDIR /app
+EXPOSE 80
+COPY --from=build /app/publish .
+ENTRYPOINT ["dotnet", "AuctionService.dll"]

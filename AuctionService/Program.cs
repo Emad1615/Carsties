@@ -103,6 +103,11 @@ builder.Services.AddMassTransit(x=> {
         cfg.UseMessageRetry(r => r.Interval(5,TimeSpan.FromSeconds(5)));
         cfg.ReceiveEndpoint("auction-auction-finished", e => { e.ConfigureConsumer<AuctionFinishedConsumer>(context); });
         cfg.ReceiveEndpoint("auction-bid-placed", e => { e.ConfigureConsumer<BidPlacedConsumer>(context); });
+
+        cfg.Host(builder.Configuration["RabbitMQ:Host"], "/", h => { 
+            h.Username(builder.Configuration.GetValue("RabbitMQ:Username","guest"));
+            h.Password(builder.Configuration.GetValue("RabbitMQ:Password", "guest"));
+        });
         cfg.ConfigureEndpoints(context);
     });
 });

@@ -2,7 +2,7 @@ services:
   postgres:
     image: postgres:18.1
     container_name: auctions_postgres_db      
-    restart: unless-stopped
+    restart: always
     env_file:
       - .env
     environment:
@@ -22,7 +22,7 @@ services:
   mongo:
     image: mongo:6.0
     container_name: search_mongo_db      
-    restart: unless-stopped
+    restart: always
     env_file:
       - .env
     environment:
@@ -34,7 +34,7 @@ services:
     volumes:
       - mongodata:/data/db            # recommended for 18+
     healthcheck:
-      test: ["CMD-SHELL", "mongo --username ${MONGO_USER:-root} --password ${MONGO_PASSWORD:-mongopw} --authenticationDatabase admin --eval \"db.adminCommand('ping')\" || exit 1"]
+      test: ["CMD-SHELL", "mongosh --username ${MONGO_USER:-root} --password ${MONGO_PASSWORD:-mongopw} --authenticationDatabase admin --eval \"db.adminCommand('ping')\" || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -42,7 +42,7 @@ services:
   rabbitmq:
     image: rabbitmq:4-management-alpine
     container_name: auctions_rabbitmq
-    restart: unless-stopped
+    restart: always
     env_file:
       - .env
     environment:
@@ -59,6 +59,74 @@ services:
       timeout: 5s
       retries: 5
       start_period: 30s
+  auctions-svc:
+    image: auctions-svc:latest
+    container_name: auctions_service_api
+    restart: always
+    build:
+      context: .
+      dockerfile: AuctionService/Dockerfile
+    ports:
+      - "7001:80" 
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__DefaultConnection=Server=postgres:5432;User Id=postgres;Password=postgrespw;Database=auctionsDb
+      - RabbitMQ__Host=rabbitmq
+      - IdentityServiceUrl=http://identity-svc:80
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+  search-svc:
+    image: search-svc:latest
+    container_name: search_service_api
+    restart: always
+    build:
+      context: .
+      dockerfile: SearchService/Dockerfile
+    ports:
+      - "7002:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__MongoDbConnection=mongodb://root:mongopw@mongo:27017/?authSource=admin
+      - RabbitMQ__Host=rabbitmq
+      - AuctionSvcUrl=http://auctions-svc
+    depends_on:
+        mongo:
+            condition: service_healthy
+        rabbitmq:
+            condition: service_healthy
+  identity-svc:
+    image: identity-svc:latest
+    container_name: identity_service_api
+    restart: always
+    build:
+      context: .
+      dockerfile: IdentityService/Dockerfile
+    ports:
+      - "5001:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__DefaultConnection=Server=postgres:5432;User Id=postgres;Password=postgrespw;Database=identityDb
+    depends_on:
+      postgres:
+        condition: service_healthy
+  gateway-svc:
+    image: gateway-svc:latest
+    container_name: api_gateway
+    restart: always
+    build:
+      context: .
+      dockerfile: GatewayService/Dockerfile
+    ports:
+      - "6001:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URLS=http://+:80
 volumes:
   pgdata:
   mongodata:
