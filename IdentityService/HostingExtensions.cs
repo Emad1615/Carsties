@@ -67,18 +67,22 @@ internal static class HostingExtensions
                 options.Events.RaiseSuccessEvents = true;
 
                 // Use a large chunk size for diagnostic data in development where it will be redirected to a local file.
-                //if (builder.Environment.IsDevelopment())
-                //{
-                //    options.Diagnostics.ChunkSize = 1024 * 1024 * 10; // 10 MB
-                //}
+                if (builder.Environment.IsDevelopment())
+                {
+                    options.Diagnostics.ChunkSize = 1024 * 1024 * 10; // 10 MB
+                }
+                if (builder.Environment.IsEnvironment("Docker") || builder.Environment.IsDevelopment())
+                {
+                    options.IssuerUri= builder.Configuration["IssuerUri"];
+                }
             })
             .AddInMemoryIdentityResources(Config.IdentityResources)
             .AddInMemoryApiScopes(Config.ApiScopes)
             .AddInMemoryClients(Config.Clients)
             .AddAspNetIdentity<ApplicationUser>()
             .AddProfileService<CustomProfileService>()
-            .AddDeveloperSigningCredential();
-            //.AddLicenseSummary();
+            .AddDeveloperSigningCredential()
+            .AddLicenseSummary();
             
 
         builder.Services.ConfigureApplicationCookie(options =>

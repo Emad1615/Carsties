@@ -20,6 +20,7 @@ namespace AuctionService.Features.Auctions.Commands
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var auction = await context.Auctions.Include(x => x.Item).FirstOrDefaultAsync(x => x.Id == request.AuctionDTO.Id, cancellationToken);
+                if (auction is null) return Result<Unit>.Failure("No Auction not found.", 404);
                 if (auction.CreatedBy != request.AuctionDTO.ModifiedBy)
                     return Result<Unit>.Failure("Access denied. only the auction owner can edit this resource", 403);
                 auction.UpdateAuction(request.AuctionDTO.ReservePrice, request.AuctionDTO.AuctionEnd, request.AuctionDTO.ModifiedBy);
