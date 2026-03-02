@@ -10,13 +10,13 @@ namespace SearchService.Consumers
     {
         public async Task Consume(ConsumeContext<AuctionDeleted> context)
         {
-            Console.WriteLine($"Received AuctionDeleted event for auction with ID: {context.Message.Slug_Id}");
+            Console.WriteLine($"Received AuctionDeleted event for auction with ID: {context.Message.AuctionId}");
 
             var item = mapper.Map<AuctionDeleted>(context.Message);
 
             var db = await DB.InitAsync("SearchBb");
 
-            await db.DeleteAsync<Item>(x => x.Slug_Id == context.Message.Slug_Id);
+            await db.DeleteAsync<Item>(x => x.AuctionId == context.Message.AuctionId);
         }
     }
 }

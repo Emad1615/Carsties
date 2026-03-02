@@ -2,7 +2,7 @@
 {
     public class AuctionUpdated
     {
-        public int Slug_Id { get; set; }
+        public int AuctionId { get; set; }
         public string Color { get; set; }
         public string Make { get; set; }
         public string Model { get; set; }

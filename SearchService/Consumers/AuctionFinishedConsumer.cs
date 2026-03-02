@@ -15,14 +15,14 @@ namespace SearchService.Consumers
             if (context.Message.ItemSold)
             {
                 await db.Update<Item>()
-                     .Match(i => i.Slug_Id == context.Message.AuctionId)
+                     .Match(i => i.AuctionId == context.Message.AuctionId)
                      .Modify(x => x.Winner, context.Message.Winner)
                      .Modify(x => x.SoldAmount, (int)context.Message.Amount)
                      .Modify(x => x.Status, "Finished")
                      .ExecuteAsync();
             }
             await db.Update<Item>()
-                     .Match(i => i.Slug_Id == context.Message.AuctionId)
+                     .Match(i => i.AuctionId == context.Message.AuctionId)
                      .Modify(x => x.Status, "ReserveNotMet")
                      .ExecuteAsync();
         }

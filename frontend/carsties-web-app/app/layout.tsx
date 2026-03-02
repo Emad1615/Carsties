@@ -1,0 +1,34 @@
+import type { Metadata } from "next";
+import { Geist } from "next/font/google";
+import "./globals.css";
+import Layout from "@/layouts/Layout";
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+export const metadata: Metadata = {
+  title: {
+    default: "Carsties ",
+    template: "%s | Carsties ",
+  },
+  description: "Auctions for cars and car parts ",
+  icons: {
+    icon: "/icon.png",
+  },
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en">
+      <body className={`${geistSans.variable}  antialiased h-dvh bg-[#121726]`}>
+        <Layout>{children}</Layout>
+      </body>
+    </html>
+  );
+}

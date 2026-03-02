@@ -13,7 +13,7 @@ namespace SearchService.Consumers
                     context.Message.AuctionId, context.Message.Bidder, context.Message.Amount);
 
             var db = await DB.InitAsync("SearchBb");
-            var auction =await db.Find<Item>().Match(x => x.Slug_Id == context.Message.AuctionId).ExecuteFirstAsync();
+            var auction =await db.Find<Item>().Match(x => x.AuctionId == context.Message.AuctionId).ExecuteFirstAsync();
             if(context.Message.Amount > auction.SoldAmount && context.Message.BidStatus.Contains("Accepted"))
             {
                await db.Update<Item>()

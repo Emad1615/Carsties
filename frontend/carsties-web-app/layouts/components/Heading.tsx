@@ -1,0 +1,23 @@
+import React from "react";
+
+type Props = {
+  title: string;
+  subtitle?: string;
+  textColor?: string;
+};
+export default function Heading({ title, subtitle, textColor }: Props) {
+  return (
+    <div
+      className={`flex justify-center items-center flex-col gap-2 border-b border-gray-700 pb-4 mb-8 `}
+    >
+      <span
+        className={`text-2xl font-bold ${textColor ? `text-${textColor}-400` : ""}`}
+      >
+        {title}
+      </span>
+      {subtitle && (
+        <span className="text-sm  text-gray-400 font-semibold">{subtitle}</span>
+      )}
+    </div>
+  );
+}

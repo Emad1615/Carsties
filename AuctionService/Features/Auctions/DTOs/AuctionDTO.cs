@@ -2,7 +2,7 @@
 {
     public class AuctionDTO
     {
-        public int Slug_Id { get; set; }
+        public int AuctionId { get; set; }
         public string ReservePrice { get; set; }
         public string Seller { get; set; }
         public string Winner { get; set; }

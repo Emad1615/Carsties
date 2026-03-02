@@ -2,6 +2,6 @@
 {
     public class AuctionDeleted
     {
-        public int Slug_Id { get; set; }
+        public int AuctionId { get; set; }
     }
 }

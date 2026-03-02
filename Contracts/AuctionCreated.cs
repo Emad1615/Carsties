@@ -2,7 +2,7 @@
 {
     public class AuctionCreated
     {
-        public int Slug_Id { get; set; }
+        public int AuctionId { get; set; }
         public string ReservePrice { get; set; }
         public string Seller { get; set; }
         public int SoldAmount { get; set; }
