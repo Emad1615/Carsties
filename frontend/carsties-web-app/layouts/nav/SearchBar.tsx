@@ -1,6 +1,6 @@
 export default function SearchBar() {
   return (
-    <div className="relative flex-1 w-full border border-gray-500 shadow-sm rounded-xl py-3 px-4">
+    <div className="relative   w-1/3 border border-gray-500 shadow-sm rounded-xl py-3 px-4">
       <input
         type="text"
         placeholder="Search for cars..."

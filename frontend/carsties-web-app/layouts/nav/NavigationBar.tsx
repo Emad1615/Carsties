@@ -52,7 +52,7 @@ export function NavigationBar() {
         </Dropdown>
         <NavbarToggle />
       </div>
-      <NavbarCollapse>
+      <NavbarCollapse className="flex flex-1 justify-center items-center mx-auto w-full ">
         <SearchBar />
       </NavbarCollapse>
     </Navbar>
