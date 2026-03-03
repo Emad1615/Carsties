@@ -1,31 +1,38 @@
 "use client";
+
+import { Button, ButtonGroup } from "flowbite-react";
+
 type Props = {
+  label: string;
   filters: FilterOption[];
   currentFilter: string;
   onFilterChange: (filter: string) => void;
 };
 export default function Filter({
+  label,
   filters,
   currentFilter,
   onFilterChange,
 }: Props) {
   return (
     <div className="flex items-center">
-      <span className="mr-4 text-sm font-semibold">Order by:</span>
-      {filters.map((filter) => (
-        <button
-          key={filter.value}
-          className={`px-4 py-2  text-xs font-medium flex justify-center items-center gap-2 ${
-            currentFilter === filter.value
-              ? "bg-blue-500 text-white"
-              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-          }`}
-          onClick={() => onFilterChange(filter.value)}
-        >
-          {filter.icon}
-          {filter.label}
-        </button>
-      ))}
+      <span className="mr-4 text-xs font-semibold text-zinc-500 uppercase">
+        {label}
+      </span>
+      <ButtonGroup outline={true}>
+        {filters.map((filter) => (
+          <Button
+            size="xs"
+            key={filter.value}
+            onClick={() => onFilterChange(filter.value)}
+            color={`${currentFilter == filter.value ? "red" : "gray"}`}
+            className="text-xs flex gap-1 items-center justify-center"
+          >
+            {filter.icon}
+            {filter.label}
+          </Button>
+        ))}
+      </ButtonGroup>
     </div>
   );
 }

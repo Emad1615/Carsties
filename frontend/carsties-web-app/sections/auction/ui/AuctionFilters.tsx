@@ -11,6 +11,19 @@ export default function AuctionFilters() {
   return (
     <div className="flex justify-between items-center">
       <Filter
+        label="Order by:"
+        filters={orderFilters}
+        currentFilter=""
+        onFilterChange={() => {}}
+      />
+      <Filter
+        label="Filter By:"
+        filters={orderFilters}
+        currentFilter=""
+        onFilterChange={() => {}}
+      />
+      <Filter
+        label="Page size:"
         filters={orderFilters}
         currentFilter=""
         onFilterChange={() => {}}
