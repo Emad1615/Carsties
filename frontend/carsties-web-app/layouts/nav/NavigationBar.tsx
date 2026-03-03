@@ -10,51 +10,75 @@ import {
   NavbarLink,
   NavbarToggle,
 } from "flowbite-react";
-import SearchBar from "./SearchBar";
+import Logo from "./Logo";
+import { BiHome, BiNews, BiSearch, BiStore } from "react-icons/bi";
 
 export function NavigationBar() {
   return (
-    <Navbar>
-      <NavbarBrand href="/">
-        {/* eslint-disable-next-line */}
-        <img
-          src="/icon.png"
-          className="mr-1 h-6 sm:h-10"
-          alt="Flowbite React Logo"
-        />
-        <span className="self-center whitespace-nowrap text-xs font-semibold text-orange-500 uppercase italic">
-          Carsties
-        </span>
-      </NavbarBrand>
-      <div className="flex md:order-2">
-        <Dropdown
-          arrowIcon={false}
-          inline
-          label={
-            <Avatar
-              alt="User settings"
-              img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-              rounded
-            />
-          }
-        >
-          <DropdownHeader>
-            <span className="block text-sm">Bonnie Green</span>
-            <span className="block truncate text-sm font-medium">
-              name@flowbite.com
-            </span>
-          </DropdownHeader>
-          <DropdownItem>Dashboard</DropdownItem>
-          <DropdownItem>Settings</DropdownItem>
-          <DropdownItem>Earnings</DropdownItem>
-          <DropdownDivider />
-          <DropdownItem>Sign out</DropdownItem>
-        </Dropdown>
-        <NavbarToggle />
-      </div>
-      <NavbarCollapse className="flex flex-1 justify-center items-center mx-auto w-full ">
-        <SearchBar />
-      </NavbarCollapse>
-    </Navbar>
+    <div className="shadow-md fixed top-0 left-0 right-0 z-50 ">
+      <Navbar fluid className="container mx-auto ">
+        <NavbarBrand href="https://flowbite-react.com">
+          <Logo />
+        </NavbarBrand>
+        <div className="flex md:order-2">
+          <Dropdown
+            arrowIcon={false}
+            inline
+            label={
+              <Avatar
+                alt="User settings"
+                img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                rounded
+              />
+            }
+          >
+            <DropdownHeader>
+              <span className="block text-sm">Bonnie Green</span>
+              <span className="block truncate text-sm font-medium">
+                name@flowbite.com
+              </span>
+            </DropdownHeader>
+            <DropdownItem>Dashboard</DropdownItem>
+            <DropdownItem>Settings</DropdownItem>
+            <DropdownItem>Earnings</DropdownItem>
+            <DropdownDivider />
+            <DropdownItem>Sign out</DropdownItem>
+          </Dropdown>
+          <NavbarToggle />
+        </div>
+        <NavbarCollapse>
+          <NavbarLink href="#" active>
+            Home
+          </NavbarLink>
+          <NavbarLink
+            href="#"
+            className="flex justify-center items-center gap-1"
+          >
+            <BiHome /> Home
+          </NavbarLink>
+          <NavbarLink
+            className="flex justify-center items-center gap-1"
+            href="#"
+          >
+            <BiStore />
+            Store
+          </NavbarLink>
+          <NavbarLink
+            className="flex justify-center items-center gap-1"
+            href="#"
+          >
+            <BiNews />
+            New Feeds
+          </NavbarLink>
+          <NavbarLink
+            className="flex justify-center items-center gap-1"
+            href="#"
+          >
+            <BiSearch />
+            Search
+          </NavbarLink>
+        </NavbarCollapse>
+      </Navbar>
+    </div>
   );
 }

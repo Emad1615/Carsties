@@ -8,15 +8,15 @@ type Props = {
 export default function Heading({ title, subtitle, textColor }: Props) {
   return (
     <div
-      className={`flex justify-center items-center flex-col gap-2 border-b border-gray-700 pb-4 mb-8 `}
+      className={`flex justify-center items-center flex-col gap-2 border-b border-gray-200 pb-4 mb-8 `}
     >
       <span
-        className={`text-2xl font-bold ${textColor ? `text-${textColor}-400` : ""}`}
+        className={`text-2xl font-bold ${textColor ? `text-${textColor}-500` : ""}`}
       >
         {title}
       </span>
       {subtitle && (
-        <span className="text-sm  text-gray-400 font-semibold">{subtitle}</span>
+        <span className="text-sm  text-gray-500 font-semibold">{subtitle}</span>
       )}
     </div>
   );

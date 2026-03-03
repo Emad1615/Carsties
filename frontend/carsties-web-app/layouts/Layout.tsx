@@ -1,3 +1,4 @@
+"use client";
 import { NavigationBar } from "./nav/NavigationBar";
 
 type Props = {
@@ -9,7 +10,9 @@ export default function Layout({ children }: Props) {
       <header>
         <NavigationBar />
       </header>
-      <main className="container my-8 mx-auto text-white">{children}</main>
+      <main className="container my-8 mx-auto text-white mt-20">
+        {children}
+      </main>
     </>
   );
 }
