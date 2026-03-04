@@ -47,11 +47,9 @@ export function NavigationBar() {
           <NavbarToggle />
         </div>
         <NavbarCollapse>
-          <NavbarLink href="#" active>
-            Home
-          </NavbarLink>
           <NavbarLink
-            href="#"
+            active
+            href="/"
             className="flex justify-center items-center gap-1"
           >
             <BiHome /> Home

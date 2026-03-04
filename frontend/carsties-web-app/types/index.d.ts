@@ -28,3 +28,13 @@ type FilterOption = {
   value: string;
   icon?: React.ReactNode;
 };
+
+type searchParams = {
+  searchTerm?: string;
+  pageNumber?: number;
+  pageSize?: number;
+  orderBy?: string;
+  filterBy?: string;
+  winner?: string;
+  seller?: string;
+};

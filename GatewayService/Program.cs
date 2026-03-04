@@ -1,10 +1,13 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors();
 
 builder.Services.AddReverseProxy()
     .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
@@ -35,9 +38,17 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
+app.UseCors(option =>
+{
+    option.WithOrigins(builder.Configuration.GetValue<string>("ClientUrl")!)
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+    .AllowCredentials();
+});
+app.MapReverseProxy();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapReverseProxy();
 
 app.Run();
