@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import { motion } from "motion/react";
 
 type Props = {
   title: string;
@@ -16,7 +17,20 @@ export default function Heading({ title, subtitle, textColor }: Props) {
         {title}
       </span>
       {subtitle && (
-        <span className="text-sm  text-gray-500 font-semibold">{subtitle}</span>
+        <div>
+          <motion.div
+            animate={{ x: ["0px", "15px", "-15px", "15px", "-15px", "0px"] }}
+            transition={{
+              duration: 5,
+              repeat: Infinity,
+              repeatType: "loop",
+              ease: "linear",
+            }}
+            className="text-sm  text-gray-500 font-semibold"
+          >
+            {subtitle}
+          </motion.div>
+        </div>
       )}
     </div>
   );

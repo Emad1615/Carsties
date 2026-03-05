@@ -30,9 +30,9 @@ export default function AuctionView() {
       {isLoading && <Spinner />}
       {auctions && (
         <>
-          <div className="grid sm:grid-cols-3 md:grid-cols-4 gap-4 my-12 ">
+          <div className="grid sm:grid-cols-3 md:grid-cols-4 gap-5 my-12 ">
             {auctions.result.map((data: Auction) => (
-              <AuctionCard key={data.id} auction={data} isLoading={isLoading} />
+              <AuctionCard key={data.id} auction={data} />
             ))}
           </div>
           <PaginationApp
