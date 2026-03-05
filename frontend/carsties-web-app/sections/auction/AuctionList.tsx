@@ -7,6 +7,7 @@ import qs from "query-string";
 import Spinner from "@/layouts/components/Spinner";
 import AuctionCard from "./ui/AuctionCard";
 import PaginationApp from "@/layouts/components/PaginationApp";
+import Empty from "@/layouts/components/Empty";
 export default function AuctionView() {
   const params = useParamStore(
     useShallow((state) => ({
@@ -30,11 +31,16 @@ export default function AuctionView() {
       {isLoading && <Spinner />}
       {auctions && (
         <>
-          <div className="grid sm:grid-cols-3 md:grid-cols-4 gap-5 my-12 ">
-            {auctions.result.map((data: Auction) => (
-              <AuctionCard key={data.id} auction={data} />
-            ))}
-          </div>
+          {auctions.result.length > 0 ? (
+            <div className="grid sm:grid-cols-3 md:grid-cols-4 gap-5 my-12 ">
+              {auctions.result.map((data: Auction) => (
+                <AuctionCard key={data.id} auction={data} />
+              ))}
+            </div>
+          ) : (
+            <Empty isReset={true} />
+          )}
+
           <PaginationApp
             pageCount={auctions.pageCount}
             pageNumber={params.pageNumber}

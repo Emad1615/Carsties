@@ -44,7 +44,7 @@ export default function AuctionCard({ auction }: Props) {
         </div>
         <div className="flex justify-between items-center ">
           <div className="flex flex-col gap-1">
-            <span className="text-md text-gray-800 font-semibold">
+            <span className="text-md text-gray-700 font-semibold">
               {auction.make} - {auction.year}
             </span>
             <span className="text-xs text-gray-500 font-semibold">
