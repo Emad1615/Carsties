@@ -19,7 +19,9 @@ const renderer = ({
       className={`absolute bottom-2 left-2 rounded-md shadow-sm px-2 pb-1 tracking-widest ${completed ? "bg-red-500" : days === 0 && hours < 6 ? "bg-orange-500" : "bg-green-600"}`}
     >
       {completed ? (
-        <span>Auction finished</span>
+        <span className="text-xs font-semibold text-white">
+          Auction finished
+        </span>
       ) : (
         <span
           className="text-xs text-white font-semibold"

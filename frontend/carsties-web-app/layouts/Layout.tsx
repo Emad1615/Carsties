@@ -4,6 +4,7 @@ import { NavigationBar } from "./nav/NavigationBar";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Suspense } from "react";
 import Loading from "./components/Loading";
+import { Toaster } from "react-hot-toast";
 
 type Props = {
   children: React.ReactNode;
@@ -23,10 +24,47 @@ export default function Layout({ children }: Props) {
         <header>
           <NavigationBar />
         </header>
-        <main className="container my-8 mx-auto text-white mt-20">
+        <main className="container my-8 mx-auto text-white mt-20  ">
           {children}
         </main>
       </QueryClientProvider>
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+        gutter={12}
+        toasterId="default"
+        toastOptions={{
+          className: "min-w-50",
+          duration: 5000,
+          removeDelay: 1000,
+          style: {
+            background: "#363636",
+            color: "#fff",
+          },
+          success: {
+            duration: 3000,
+            style: {
+              background: "white",
+              color: "black",
+            },
+            iconTheme: {
+              primary: "green",
+              secondary: "white",
+            },
+          },
+          error: {
+            duration: 3000,
+            style: {
+              background: "white",
+              color: "black",
+            },
+            iconTheme: {
+              primary: "red",
+              secondary: "white",
+            },
+          },
+        }}
+      />
     </Suspense>
   );
 }

@@ -21,7 +21,7 @@ export default function AuctionView() {
   const setParam = useParamStore((state) => state.setParam);
   const queryStringUrl = qs.stringify(
     { url: "", ...params },
-    { skipEmptyString: true },
+    { skipEmptyString: true, skipNull: true },
   );
   const { auctions, isLoading } = useAuctions(queryStringUrl);
   console.log(auctions);
