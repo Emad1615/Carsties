@@ -1,54 +1,20 @@
-import {
-  Avatar,
-  Dropdown,
-  DropdownDivider,
-  DropdownHeader,
-  DropdownItem,
-  Navbar,
-  NavbarBrand,
-  NavbarCollapse,
-  NavbarLink,
-  NavbarToggle,
-} from "flowbite-react";
+import { Navbar, NavbarBrand } from "flowbite-react";
 import Logo from "./Logo";
-import { BiHome, BiNews, BiSearch, BiStore } from "react-icons/bi";
+import UserActions from "./UserActions";
+import { NavbarCollapse, NavbarLink } from "flowbite-react";
 import { usePathname } from "next/navigation";
+import { BiHome, BiNews, BiSearch, BiStore } from "react-icons/bi";
 
 export function NavigationBar() {
   const currentPath = usePathname();
-  console.log(currentPath);
+
   return (
     <div className="shadow-md fixed top-0 left-0 right-0 z-50 ">
       <Navbar fluid className="container mx-auto">
         <NavbarBrand href="https://flowbite-react.com">
           <Logo />
         </NavbarBrand>
-        <div className="flex md:order-2">
-          <Dropdown
-            arrowIcon={false}
-            inline
-            label={
-              <Avatar
-                alt="User settings"
-                img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-                rounded
-              />
-            }
-          >
-            <DropdownHeader>
-              <span className="block text-sm">Bonnie Green</span>
-              <span className="block truncate text-sm font-medium">
-                name@flowbite.com
-              </span>
-            </DropdownHeader>
-            <DropdownItem>Dashboard</DropdownItem>
-            <DropdownItem>Settings</DropdownItem>
-            <DropdownItem>Earnings</DropdownItem>
-            <DropdownDivider />
-            <DropdownItem>Sign out</DropdownItem>
-          </Dropdown>
-          <NavbarToggle />
-        </div>
+        <UserActions />
         <NavbarCollapse>
           <NavbarLink
             href="/"

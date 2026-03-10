@@ -41,8 +41,8 @@ public static class Config
                 AllowedScopes={ "openid", "profile", "auctionApp" },
                 AllowOfflineAccess=true,
                 RequirePkce=false,
-                AccessTokenLifetime=3600*24*30
-
+                AccessTokenLifetime=3600*24*30,
+                AlwaysIncludeUserClaimsInIdToken=true,
             }
         };
 }

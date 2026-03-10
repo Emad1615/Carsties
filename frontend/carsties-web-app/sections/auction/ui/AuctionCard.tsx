@@ -14,7 +14,7 @@ export default function AuctionCard({ auction }: Props) {
           src={auction.imageUrl}
           fill
           alt={`${auction.make}-${auction.model}-photo`}
-          quality={70}
+          quality={75}
           className="rounded-md"
           sizes="(max-width: 768px) 100vw, 
                  (max-width: 1200px) 50vw, 
