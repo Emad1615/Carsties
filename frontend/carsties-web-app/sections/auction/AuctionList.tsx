@@ -24,7 +24,6 @@ export default function AuctionView() {
     { skipEmptyString: true, skipNull: true },
   );
   const { auctions, isLoading } = useAuctions(queryStringUrl);
-  console.log(auctions);
   return (
     <div>
       <AuctionFilters />

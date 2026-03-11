@@ -37,7 +37,7 @@ public static class Config
                 ClientId="nextApp",
                 ClientSecrets={ new Secret("secret".Sha256())},
                 AllowedGrantTypes=GrantTypes.CodeAndClientCredentials,
-                RedirectUris={ "https://localhost:3000/api/auth/callback/id-server" },
+                RedirectUris={ "http://localhost:3000/api/auth/callback/id-server" },
                 AllowedScopes={ "openid", "profile", "auctionApp" },
                 AllowOfflineAccess=true,
                 RequirePkce=false,

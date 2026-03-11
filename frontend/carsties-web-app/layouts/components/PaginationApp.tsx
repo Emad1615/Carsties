@@ -1,6 +1,5 @@
 import { useParamStore } from "@/hooks/useParamStore";
 import { Pagination, Select } from "flowbite-react";
-import { ChangeEvent } from "react";
 type Props = {
   pageCount: number;
   pageNumber: number;
@@ -13,7 +12,6 @@ export default function PaginationApp({
 }: Props) {
   const pageSize = useParamStore((state) => state.pageSize);
   const setPageSize = useParamStore((state) => state.setParam);
-  console.log(pageSize);
   return (
     <div className="flex justify-center items-end-safe gap-4">
       <div className="flex overflow-x-auto sm:justify-center mt-6">

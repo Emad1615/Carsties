@@ -3,6 +3,7 @@ import DuendeIDS6Provider from "next-auth/providers/duende-identity-server6";
 import { OIDCConfig } from "next-auth/providers";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  secret: process.env.AUTH_SECRET,
   providers: [
     DuendeIDS6Provider({
       id: "id-server",
@@ -14,13 +15,21 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     } as OIDCConfig<Profile>),
   ],
   callbacks: {
-    authorized: ({ auth }) => {
+    authorized: async ({ auth }) => {
       return !!auth;
     },
-    jwt: ({ token, profile, account, user }) => {
+    jwt: async ({ token, profile, account, user }) => {
+      console.log("token :", token);
+      console.log("profile :", profile);
+      console.log("account :", account);
+      console.log("user :", user);
       return token;
     },
-    session: ({ session, token }) => {
+    session: async ({ session, token }) => {
+      if (token) {
+        session.user.id = token.sub!;
+      }
+      console.log("session :", session.user);
       return session;
     },
   },

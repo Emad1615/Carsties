@@ -1,4 +1,4 @@
-import { getAuctions } from "@/actions/auctions";
+import { getAuctions } from "@/app/actions/auctions";
 import { useQuery } from "@tanstack/react-query";
 
 export const useAuctions = (url: string) => {

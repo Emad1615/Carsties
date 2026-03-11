@@ -1,3 +1,4 @@
+"use server";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export const getAuctions = async (url: string) => {
