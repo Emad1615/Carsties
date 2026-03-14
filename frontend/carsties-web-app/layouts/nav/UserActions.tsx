@@ -10,7 +10,8 @@ import {
   NavbarToggle,
   Spinner,
 } from "flowbite-react";
-import { signIn } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
+import { BiUser } from "react-icons/bi";
 
 export default function UserActions() {
   const { user, isLoading } = useCurrentUser();
@@ -25,24 +26,34 @@ export default function UserActions() {
               arrowIcon={false}
               inline
               label={
-                <Avatar
-                  alt="User settings"
-                  img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-                  rounded
-                />
+                <div className="flex justify-start items-center gap-1 ">
+                  <Avatar
+                    alt={user.name!}
+                    img={user.image!}
+                    rounded
+                    className="border-2 border-orange-500 rounded-full"
+                  />
+                  <span className="text-zinc-600 font-semibold text-sm uppercase ">
+                    {user.name}
+                  </span>
+                </div>
               }
             >
-              <DropdownHeader>
-                <span className="block text-sm">Bonnie Green</span>
-                <span className="block truncate text-sm font-medium">
-                  name@flowbite.com
+              <DropdownHeader className="border-zinc-100 border-b ">
+                <span className="flex justify-start items-center gap-1 truncate  text-sm ">
+                  <BiUser /> {user.username}
+                </span>
+                <span className=" text-sm  w-32 tracking-widest font-bold">
+                  {user.email}
                 </span>
               </DropdownHeader>
               <DropdownItem>My auctions</DropdownItem>
               <DropdownItem>Auction won</DropdownItem>
               <DropdownItem>Sell my car</DropdownItem>
               <DropdownDivider />
-              <DropdownItem>Sign out</DropdownItem>
+              <DropdownItem onClick={() => signOut({ redirectTo: "/" })}>
+                Sign out
+              </DropdownItem>
             </Dropdown>
           )}
         </>

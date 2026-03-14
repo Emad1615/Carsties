@@ -38,6 +38,7 @@ public static class Config
                 ClientSecrets={ new Secret("secret".Sha256())},
                 AllowedGrantTypes=GrantTypes.CodeAndClientCredentials,
                 RedirectUris={ "http://localhost:3000/api/auth/callback/id-server" },
+                PostLogoutRedirectUris={"http://localhost:3000"},
                 AllowedScopes={ "openid", "profile", "auctionApp" },
                 AllowOfflineAccess=true,
                 RequirePkce=false,

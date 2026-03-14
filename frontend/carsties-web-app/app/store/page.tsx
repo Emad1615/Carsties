@@ -1,26 +1,48 @@
 "use client";
-import toast from "react-hot-toast";
+import { useState } from "react";
+import { addAuction } from "../actions/auctions";
+import { Spinner } from "flowbite-react";
+import { error } from "console";
 
-export default function page() {
+export default function Page() {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [status, setStatus] = useState<number>();
+  const [message, setMessage] = useState<string>("");
+  const [error, setError] = useState();
+  const handleClick = () => {
+    setLoading(true);
+    addAuction()
+      .then((res) => {
+        setStatus(res.status);
+        setMessage(res.message);
+      })
+      .catch((res) => {
+        setStatus(res.status);
+        setMessage(res.message);
+        setError(res.errors);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
   return (
     <div>
       <button
-        className="text-black bg-orange-400 p-2"
-        onClick={() => {
-          toast.success("Successfully");
-        }}
+        className=" bg-orange-400 p-2 min-w-16 rounded text-white text-sm font-semibold cursor-pointer"
+        onClick={handleClick}
       >
-        Click Me Success
+        {loading ? (
+          <>
+            <Spinner size="sm" color="warning" />
+            <span className="text-xs text-white "> loading...</span>
+          </>
+        ) : (
+          <>Add Auction</>
+        )}
       </button>
-
-      <button
-        className="text-black bg-orange-400 p-2"
-        onClick={() => {
-          toast.error("Failure");
-        }}
-      >
-        Click Me Fail
-      </button>
+      <p className="text-black">Status : {status}</p>
+      <p className="text-black"> Message : {message}</p>
+      <p className="text-black"> Error : {JSON.stringify(error)}</p>
     </div>
   );
 }

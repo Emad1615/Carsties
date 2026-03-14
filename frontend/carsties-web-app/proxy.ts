@@ -1,7 +1,7 @@
 export { auth as proxy } from "@/auth";
 
 export const config = {
-  matcher: ["/session"],
+  matcher: ["/store"],
   pages: {
     signIn: "/api/auth/signin",
   },

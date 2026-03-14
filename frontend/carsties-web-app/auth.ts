@@ -12,25 +12,41 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       issuer: "http://localhost:5001",
       authorization: { params: { scope: "openid profile auctionApp" } },
       idToken: true,
-    } as OIDCConfig<Profile>),
+    } as OIDCConfig<Omit<Profile, "username">>),
   ],
   callbacks: {
     authorized: async ({ auth }) => {
       return !!auth;
     },
-    jwt: async ({ token, profile, account, user }) => {
-      console.log("token :", token);
-      console.log("profile :", profile);
-      console.log("account :", account);
-      console.log("user :", user);
+    jwt: async ({ token, profile, account }) => {
+      if (profile) {
+        token.username = profile.username;
+        token.email = profile[
+          "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
+        ] as string | undefined;
+        token.picture = profile.avatar;
+      }
+      if (account && account.access_token) {
+        token.accessToken = account.access_token;
+      }
       return token;
     },
     session: async ({ session, token }) => {
       if (token) {
-        session.user.id = token.sub!;
+        session.accessToken = token.accessToken;
+        session.user = {
+          ...session.user,
+          id: token.sub!,
+          username: token.username,
+          email: token.email!,
+          image: token.picture,
+        };
       }
-      console.log("session :", session.user);
       return session;
     },
+  },
+  pages: {
+    error: "/",
+    signIn: "/api/auth/signin",
   },
 });

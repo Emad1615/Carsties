@@ -19,6 +19,7 @@ namespace IdentityService.Service
             {
                 new Claim(ClaimTypes.Email,user.Email!),
                 new Claim("username",user.UserName!),
+                new Claim("avatar",user.Avatar!),
             };
             context.IssuedClaims.AddRange(newClaims);
             context.IssuedClaims.Add(existingClaims.FirstOrDefault(x => x.Type == JwtClaimTypes.Name)!);

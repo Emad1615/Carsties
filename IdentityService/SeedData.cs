@@ -31,6 +31,7 @@ public class SeedData
                 UserName = "emad",
                 Email = "emad@gmail.com",
                 EmailConfirmed = true,
+                Avatar= "https://res.cloudinary.com/dm2rci0ht/image/upload/v1756292552/samples/smile.jpg"
             };
             var result = userMgr.CreateAsync(alice, "Pass123$").Result;
             if (!result.Succeeded)
@@ -59,7 +60,8 @@ public class SeedData
             {
                 UserName = "farida",
                 Email = "farida@gmail.com",
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                Avatar= "https://res.cloudinary.com/dm2rci0ht/image/upload/v1756292545/samples/people/boy-snow-hoodie.jpg"
             };
             var result = userMgr.CreateAsync(bob, "Pass123$").Result;
             if (!result.Succeeded)

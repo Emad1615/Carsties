@@ -11,7 +11,7 @@ export function NavigationBar() {
   return (
     <div className="shadow-md fixed top-0 left-0 right-0 z-50 ">
       <Navbar fluid className="container mx-auto">
-        <NavbarBrand href="https://flowbite-react.com">
+        <NavbarBrand href="/">
           <Logo />
         </NavbarBrand>
         <UserActions />
