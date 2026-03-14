@@ -19,7 +19,6 @@ export default function Page() {
       .catch((res) => {
         setStatus(res.status);
         setMessage(res.message);
-        setError(res.errors);
       })
       .finally(() => {
         setLoading(false);
@@ -42,7 +41,7 @@ export default function Page() {
       </button>
       <p className="text-black">Status : {status}</p>
       <p className="text-black"> Message : {message}</p>
-      <p className="text-black"> Error : {JSON.stringify(error)}</p>
+      <p className="text-black"> Error : {error}</p>
     </div>
   );
 }
