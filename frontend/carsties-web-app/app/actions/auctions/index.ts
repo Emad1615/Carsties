@@ -36,6 +36,7 @@ export const addAuction = async () => {
     body: JSON.stringify(data),
   });
   const res = await result.json();
+  console.log(res);
   if (!result.ok)
     return {
       status: result.status,
@@ -46,6 +47,6 @@ export const addAuction = async () => {
   return {
     status: result.status,
     message: result.statusText,
-    error: res.errors,
+    error: null,
   };
 };

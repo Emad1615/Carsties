@@ -49,6 +49,7 @@ internal static class HostingExtensions
 
     public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
     {
+        builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
         builder.Services.AddRazorPages();
 
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -91,24 +92,26 @@ internal static class HostingExtensions
         });
 
         builder.Services.AddAuthentication();
-            //.AddOpenIdConnect("oidc", "Sign-in with demo.duendesoftware.com", options =>
-            //{
-            //    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
-            //    options.SignOutScheme = IdentityServerConstants.SignoutScheme;
-            //    options.SaveTokens = true;
+        //.AddOpenIdConnect("oidc", "Sign-in with demo.duendesoftware.com", options =>
+        //{
+        //    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+        //    options.SignOutScheme = IdentityServerConstants.SignoutScheme;
+        //    options.SaveTokens = true;
 
-            //    options.Authority = "https://demo.duendesoftware.com";
-            //    options.ClientId = "interactive.confidential";
-            //    options.ClientSecret = "secret";
-            //    options.ResponseType = "code";
+        //    options.Authority = "https://demo.duendesoftware.com";
+        //    options.ClientId = "interactive.confidential";
+        //    options.ClientSecret = "secret";
+        //    options.ResponseType = "code";
 
-            //    options.TokenValidationParameters = new TokenValidationParameters
-            //    {
-            //        NameClaimType = "name",
-            //        RoleClaimType = "role"
-            //    };
-            //});
-
+        //    options.TokenValidationParameters = new TokenValidationParameters
+        //    {
+        //        NameClaimType = "name",
+        //        RoleClaimType = "role"
+        //    };
+        //});
+        builder.Services.AddHttpContextAccessor();
+        builder.Services.AddScoped<IImageUploadService, ImageUploadService>();
+        builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
         return builder.Build();
     }
 

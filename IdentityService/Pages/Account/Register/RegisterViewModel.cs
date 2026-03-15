@@ -14,6 +14,6 @@ namespace IdentityService.Pages.Account.Register
         public string Password { get; set; } = string.Empty;
         public string ReturnUrl { get; set; } = string.Empty;
         public string Button { get; set; } = string.Empty;
-
+        public IFormFile File { get; set; } = null!;
     }
 }

@@ -1,5 +1,6 @@
 using Duende.IdentityModel;
 using IdentityService.Models;
+using IdentityService.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +11,7 @@ namespace IdentityService.Pages.Account.Register
 {
     [SecurityHeaders]
     [AllowAnonymous]
-    public class IndexModel(UserManager<ApplicationUser> userManager, ILogger<IndexModel> logger) : PageModel
+    public class IndexModel(UserManager<ApplicationUser> userManager, ILogger<IndexModel> logger, IImageUploadService imageUploadService, ICloudinaryService cloudinaryService) : PageModel
     {
 
         [BindProperty]
@@ -33,11 +34,24 @@ namespace IdentityService.Pages.Account.Register
                 return Redirect(Input.ReturnUrl ?? "~/");
             if (ModelState.IsValid)
             {
+                string? Avatar = null;
+                if (Input.File.Length > 0)
+                {
+                    string ContainerName = "Upload/Avatars";
+                    Avatar = await imageUploadService.UploadPhoto(ContainerName, Input.File);
+                    var res = await cloudinaryService.SavePhoto(Input.File);
+                    if (res is not null)
+                    {
+                        Avatar = res.Url;
+                    }
+
+                }
                 var user = new ApplicationUser
                 {
                     UserName = Input.Username,
                     Email = Input.Email,
-                    EmailConfirmed = true
+                    EmailConfirmed = true,
+                    Avatar = Avatar
                 };
                 var result = await userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)

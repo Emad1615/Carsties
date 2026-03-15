@@ -2,13 +2,12 @@
 import { useState } from "react";
 import { addAuction } from "../actions/auctions";
 import { Spinner } from "flowbite-react";
-import { error } from "console";
 
 export default function Page() {
   const [loading, setLoading] = useState<boolean>(false);
   const [status, setStatus] = useState<number>();
   const [message, setMessage] = useState<string>("");
-  const [error, setError] = useState();
+  const [error, setError] = useState<string[]>([]);
   const handleClick = () => {
     setLoading(true);
     addAuction()
@@ -17,13 +16,17 @@ export default function Page() {
         setMessage(res.message);
       })
       .catch((res) => {
+        setError([]);
         setStatus(res.status);
         setMessage(res.message);
+        const errors = Object.values(res.errors).flat();
+        setError(errors as string[]);
       })
       .finally(() => {
         setLoading(false);
       });
   };
+  console.log(error);
   return (
     <div>
       <button
@@ -41,7 +44,11 @@ export default function Page() {
       </button>
       <p className="text-black">Status : {status}</p>
       <p className="text-black"> Message : {message}</p>
-      <p className="text-black"> Error : {error}</p>
+      {error.map((e, i) => (
+        <p key={i} className="text-red-500">
+          {e}
+        </p>
+      ))}
     </div>
   );
 }

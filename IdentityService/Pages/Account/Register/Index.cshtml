@@ -7,7 +7,7 @@
                 <h3 class="text-muted text-center font-weight-normal">Create Account</h3>
             </div>
             <div class="card-body">
-                <form asp-page="/Account/Register/Index">
+                <form asp-page="/Account/Register/Index" method="post" enctype="multipart/form-data">
                     <input type="hidden" asp-for="Input.ReturnUrl" />
                     <div class="form-group">
                         <label asp-for="Input.Username"></label>
@@ -24,6 +24,10 @@
                     <div class="form-group">
                         <label asp-for="Input.Password"></label>
                         <input type="password" class="form-control" placeholder="Password" asp-for="Input.Password" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.File"></label>
+                        <input type="file" class="form-control" placeholder="Your image" asp-for="Input.File" >
                     </div>
                     <a class="pb-2 pt-0 d-block" asp-page="../Login/Index" asp-route-returnUrl="@Model.Input.ReturnUrl">Already regitered? Login here</a>
                     <button class="btn btn-primary" name="Input.Button" value="register">Register</button>
