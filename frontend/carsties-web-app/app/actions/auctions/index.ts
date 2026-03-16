@@ -15,7 +15,6 @@ export const getAuctions = async (url: string) => {
 
 export const addAuction = async () => {
   const session = await auth();
-  console.log(session?.accessToken);
   const data = {
     reservePrice: 1650000,
     auctionEnd: "2026-03-01T10:01:31.507716Z",
@@ -36,17 +35,19 @@ export const addAuction = async () => {
     body: JSON.stringify(data),
   });
   const res = await result.json();
-  console.log(res);
-  if (!result.ok)
-    return {
+  if (!result.ok) {
+    const errors = Object.values(res.errors).flat();
+    const response = {
       status: result.status,
       message: result.statusText,
-      error: res,
+      errors: errors,
     };
+    return response;
+  }
 
   return {
     status: result.status,
     message: result.statusText,
-    error: null,
+    errors: null,
   };
 };

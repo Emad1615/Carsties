@@ -14,13 +14,12 @@ export default function Page() {
       .then((res) => {
         setStatus(res.status);
         setMessage(res.message);
+        setError(res.errors as string[]);
       })
       .catch((res) => {
-        setError([]);
         setStatus(res.status);
         setMessage(res.message);
-        const errors = Object.values(res.errors).flat();
-        setError(errors as string[]);
+        setError(res.errors as string[]);
       })
       .finally(() => {
         setLoading(false);
