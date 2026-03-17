@@ -1,6 +1,7 @@
 "use server";
 
 import { createAgent } from "@/lib/agent";
+import { FieldValues } from "react-hook-form";
 
 const agent = await createAgent();
 
@@ -10,10 +11,10 @@ export const getAuctions = async (url: string) => {
     .then((response) => response.data);
 };
 
-export const AddAuction = async (data: any) => {
+export const AddAuction = async (data: FieldValues) => {
   return agent.post("/auction", data).then((response) => response.data);
 };
-export const UpdateAuction = async (data: any, id: number) => {
+export const UpdateAuction = async (data: FieldValues, id: number) => {
   return agent.put(`/auction/${id}`, data).then((response) => response.data);
 };
 
