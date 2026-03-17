@@ -1,5 +1,6 @@
 "use client";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { useParamStore } from "@/hooks/useParamStore";
 import {
   Avatar,
   Button,
@@ -11,10 +12,23 @@ import {
   Spinner,
 } from "flowbite-react";
 import { signIn, signOut } from "next-auth/react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { BiUser } from "react-icons/bi";
 
 export default function UserActions() {
   const { user, isLoading } = useCurrentUser();
+  const pathname = usePathname();
+  const router = useRouter();
+  const setParam = useParamStore((state) => state.setParam);
+  function handleSeller() {
+    setParam({ seller: user?.username, winner: undefined });
+    if (pathname !== "/") router.push("/");
+  }
+  function handleWinner() {
+    setParam({ winner: user?.username, seller: undefined });
+    if (pathname !== "/") router.push("/");
+  }
   return (
     <div className="flex md:order-2">
       {user ? (
@@ -47,9 +61,15 @@ export default function UserActions() {
                   {user.email}
                 </span>
               </DropdownHeader>
-              <DropdownItem>My auctions</DropdownItem>
-              <DropdownItem>Auction won</DropdownItem>
-              <DropdownItem>Sell my car</DropdownItem>
+              <DropdownItem onClick={() => handleSeller()}>
+                My auctions
+              </DropdownItem>
+              <DropdownItem onClick={() => handleWinner()}>
+                Auction won
+              </DropdownItem>
+              <DropdownItem>
+                <Link href={"/auction/create"}>Sell my car</Link>
+              </DropdownItem>
               <DropdownDivider />
               <DropdownItem onClick={() => signOut({ redirectTo: "/" })}>
                 Sign out

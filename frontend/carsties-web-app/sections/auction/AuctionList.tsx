@@ -16,6 +16,8 @@ export default function AuctionView() {
       searchTerm: state.searchTerm,
       orderBy: state.orderBy,
       filterBy: state.filterBy,
+      seller: state.seller,
+      winner: state.winner,
     })),
   );
   const setParam = useParamStore((state) => state.setParam);
