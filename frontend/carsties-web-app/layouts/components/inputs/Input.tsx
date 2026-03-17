@@ -1,4 +1,4 @@
-import { Label, TextInput, TextHelper } from "flowbite-react";
+import { Label, TextInput, HelperText } from "flowbite-react";
 import { useController, UseControllerProps } from "react-hook-form";
 
 type Props = {
@@ -26,7 +26,7 @@ export default function Input({ showLabel, label, id, type, ...props }: Props) {
         type={type}
         className=""
       />
-      <TextHelper>{error?.message}</TextHelper>
+      <HelperText>{error?.message}</HelperText>
     </div>
   );
 }
