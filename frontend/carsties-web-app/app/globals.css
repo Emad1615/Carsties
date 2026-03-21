@@ -140,3 +140,11 @@
     transform: rotate(360deg);
   }
 }
+
+.react-datepicker-wrapper {
+  display: flex !important;
+  width: 100% !important;
+}
+.react-datepicker__view-calendar-icon input {
+  width: 100% !important;
+}

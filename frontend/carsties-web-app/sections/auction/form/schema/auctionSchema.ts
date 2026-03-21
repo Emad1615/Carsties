@@ -5,7 +5,7 @@ export const auctionSchema = z.object({
   reservePrice: z.coerce
     .number()
     .refine((value) => !isNaN(value), { message: "Reserve price is required" })
-    .min(0, { message: "Mileage must be at least 0" }),
+    .min(0, { message: "reservePrice must be at least 0" }),
 
   auctionEnd: z.coerce
     .date({ message: "End date is required" })
@@ -36,3 +36,6 @@ export const auctionSchema = z.object({
 });
 
 export type AuctionSchema = z.infer<typeof auctionSchema>;
+
+export type AuctionSchemaInput = z.input<typeof auctionSchema>;
+export type AuctionSchemaOutput = z.output<typeof auctionSchema>;
