@@ -8,6 +8,8 @@ import {
 } from "./schema/auctionSchema";
 import Input from "@/layouts/components/inputs/Input";
 import InputDatePicker from "@/layouts/components/inputs/InputDatePicker";
+import { Button, Spinner } from "flowbite-react";
+import { MdCancel, MdSave } from "react-icons/md";
 
 export default function AuctionForm() {
   const {
@@ -72,6 +74,13 @@ export default function AuctionForm() {
         label="Reserve Price"
         type="number"
       />
+      <Input
+        control={control}
+        id="imageUrlId"
+        name="imageUrl"
+        showLabel={true}
+        label="Car image"
+      />
       <InputDatePicker
         control={control}
         id="auctionEndId"
@@ -79,6 +88,37 @@ export default function AuctionForm() {
         showLabel={true}
         label="Auction end date"
       />
+      <div className="flex justify-center gap-3 items-center ">
+        <Button
+          disabled={isSubmitting || !isValid}
+          type="submit"
+          outline
+          color={"green"}
+          size="sm"
+          className="flex items-center justify-center gap-2 pointer-cursor px-10 uppercase transition-all duration-200 hover:scale-110"
+        >
+          {isSubmitting ? (
+            <>
+              <Spinner color="success" /> Loading....
+            </>
+          ) : (
+            <>
+              <MdSave /> Add
+            </>
+          )}
+        </Button>
+        <Button
+          type="reset"
+          onClick={() => reset()}
+          outline
+          color={"red"}
+          size="sm"
+          className="flex items-center justify-center gap-2 pointer-cursor px-10 uppercase transition-all duration-200 hover:scale-110"
+        >
+          <MdCancel />
+          Cancel
+        </Button>
+      </div>
     </form>
   );
 }

@@ -1,6 +1,5 @@
 import Heading from "@/layouts/components/Heading";
 import AuctionForm from "@/sections/auction/form/AuctionForm";
-import React from "react";
 
 export default function page() {
   return (

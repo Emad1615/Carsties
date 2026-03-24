@@ -10,6 +10,11 @@ export const getAuctions = async (url: string) => {
     .get<PageResult<Auction>>(`/search?${url}`)
     .then((response) => response.data);
 };
+export const getAuction = async (id: number) => {
+  return agent
+    .get<PageResult<Auction>>(`/auction/${id}`)
+    .then((response) => response.data);
+};
 
 export const AddAuction = async (data: FieldValues) => {
   return agent.post("/auction", data).then((response) => response.data);

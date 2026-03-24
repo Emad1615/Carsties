@@ -1,9 +1,10 @@
+import UpdateAuction from "@/sections/auction/UpdateAuction";
+
 export default async function page({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: number }>;
 }) {
   const { id } = await params;
-
-  return <div className="text-black">Update : {id}</div>;
+  return <UpdateAuction id={id} />;
 }
