@@ -11,16 +11,14 @@ export const getAuctions = async (url: string) => {
     .then((response) => response.data);
 };
 export const getAuction = async (id: number) => {
-  return agent
-    .get<PageResult<Auction>>(`/auction/${id}`)
-    .then((response) => response.data);
+  return agent.get(`/auction/${id}`).then((response) => response.data.data);
 };
 
 export const AddAuction = async (data: FieldValues) => {
-  return agent.post("/auction", data).then((response) => response.data);
+  return agent.post("/auction", data).then((response) => response.data.data);
 };
-export const UpdateAuction = async (data: FieldValues, id: number) => {
-  return agent.put(`/auction/${id}`, data).then((response) => response.data);
+export const UpdateAuction = async (data: FieldValues) => {
+  return agent.put(`/auction`, data).then((response) => response.data.data);
 };
 
 export const DeleteAuction = async (id: number) => {

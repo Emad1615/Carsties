@@ -32,7 +32,7 @@ namespace AuctionService.Controllers
         }
         [Authorize]
         [HttpPut]
-        public async Task<ActionResult<Unit>> UpdateAuction(UpdateAuctionDTO auctionDTO, CancellationToken cancellationToken)
+        public async Task<ActionResult<int>> UpdateAuction(UpdateAuctionDTO auctionDTO, CancellationToken cancellationToken)
         {
             auctionDTO.ModifiedBy = User.FindFirstValue(ClaimTypes.NameIdentifier);
             return HandleResult(await Mediator.Send(new UpdateAuction.Command { AuctionDTO = auctionDTO }, cancellationToken));

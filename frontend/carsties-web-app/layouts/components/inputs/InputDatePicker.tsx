@@ -24,7 +24,7 @@ export default function InputDatePicker<T extends FieldValues>({
 }: Props<T>) {
   const {
     field,
-    fieldState: { isDirty, invalid, error },
+    fieldState: { isDirty, error },
   } = useController({ ...props });
   return (
     <div>
@@ -37,10 +37,11 @@ export default function InputDatePicker<T extends FieldValues>({
         startDate={new Date()}
         showTimeSelect
         showIcon
-        selected={field.value}
-        {...field}
-        value={field.value ?? ""}
+        selected={field.value ? new Date(field.value) : null}
+        onChange={(date: Date | null) => field.onChange(date)}
+        onBlur={field.onBlur}
         id={id}
+        dateFormat="yyyy/MM/dd hh:mm aa"
         className={
           error
             ? "border border-red-400 rounded-lg"

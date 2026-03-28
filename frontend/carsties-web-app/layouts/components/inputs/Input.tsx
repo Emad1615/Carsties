@@ -24,7 +24,7 @@ export default function Input<T extends FieldValues>({
     fieldState: { isDirty, error },
   } = useController({ ...props });
   return (
-    <div>
+    <div className="flex-1">
       {showLabel && (
         <div className="mb-2 block">
           <Label htmlFor={field.name}>{label}</Label>

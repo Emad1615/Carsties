@@ -6,7 +6,7 @@ export const useAuction = (id: number) => {
     data: auction,
     isLoading,
     error,
-  } = useQuery({
+  } = useQuery<Auction>({
     queryKey: ["auction", id],
     queryFn: async () => await getAuction(id),
   });
