@@ -46,6 +46,7 @@ export default function Layout({ children }: Props) {
             style: {
               background: "white",
               color: "black",
+              fontSize: "14px",
             },
             iconTheme: {
               primary: "green",
@@ -57,6 +58,8 @@ export default function Layout({ children }: Props) {
             style: {
               background: "white",
               color: "black",
+              fontSize: "13px",
+              fontWeight: "500",
             },
             iconTheme: {
               primary: "red",

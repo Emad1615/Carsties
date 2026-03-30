@@ -26,23 +26,32 @@ export const createAgent = async () => {
       switch (status) {
         case 400: // Bad request
           if (data.errors) {
-            const errors = Object.values(data.errors).flat();
-            return Promise.resolve(errors);
-          } else return Promise.reject(data);
+            // const errors = Object.values(data.errors).flat();
+            // throw errors;
+            throw JSON.stringify({
+              type: data.type,
+              message: data.title,
+              errors: data.errors,
+            });
+          } else
+            throw JSON.stringify({ type: "general", message: data.message });
           break;
         case 401: // Unauthorized
-          return Promise.reject(new Error(data?.detail || "Unauthorized"));
+          throw JSON.stringify({
+            type: "general",
+            message: data?.detail || "Unauthorized",
+          });
           break;
         case 404: // Not found
-          return Promise.reject(new Error("Not Found"));
+          throw JSON.stringify({ type: "general", message: "Not found" });
           break;
         case 405: // Method Not Allowed
-          return Promise.reject(new Error(statusText || "Not Allowed"));
+          throw JSON.stringify({ type: "general", message: "Not Allowed" });
           break;
         case 500: //Internal server error
-          return Promise.reject(data);
+          throw JSON.stringify({ type: "general", message: data });
           break;
-          return Promise.reject(new Error(data?.title ?? statusText));
+          throw JSON.stringify({ type: "general", message: statusText });
         default:
       }
     },

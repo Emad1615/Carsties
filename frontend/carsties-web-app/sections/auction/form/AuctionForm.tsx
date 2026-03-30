@@ -23,8 +23,9 @@ export default function AuctionForm({ auction }: Props) {
   const {
     control,
     handleSubmit,
-    formState: { isSubmitting, isValid, errors },
+    formState: { isSubmitting, isValid },
     reset,
+    setError,
   } = useForm<AuctionSchemaInput, FieldValues, AuctionSchemaOutput>({
     mode: "onTouched",
     resolver: zodResolver(auctionSchema),
@@ -33,17 +34,32 @@ export default function AuctionForm({ auction }: Props) {
   const { saveAuction, isPending: isSaving } = useAddAuction();
   const { editAuction, isPending: isUpdating } = useUpdateAuction();
   const isPending = isSaving || isUpdating;
-  const onHandleSubmit = (data: FieldValues) => {
+  const onHandleSubmit = async (data: FieldValues) => {
     if (auction) {
       const updatedDate = { ...data, id: auction.auctionId };
       editAuction(updatedDate, {
         onSuccess: (id) => {
-          toast.success("Auction has been created successfully");
+          toast.success("Auction has been updated successfully");
           route.push(`/auction/details/${id}`);
         },
-        onError: (error) => {
-          console.log(error);
-          toast.error("Auction has not been updated successfully - " + error);
+        //eslint-disable-next-line @typescript-eslint/no-explicit-any
+        onError: (error: any) => {
+          let parsedError = error;
+          if (error instanceof Error) {
+            try {
+              parsedError = JSON.parse(error.message);
+            } catch {
+              parsedError = { type: "general", message: error.message };
+            }
+          }
+          if (parsedError.type == "ValidationFailure") {
+            Object.entries(parsedError.errors).forEach(([key, messages]) => {
+              const field = key.charAt(0).toLowerCase() + key.slice(1);
+              setError(field as keyof AuctionSchemaInput, {
+                message: (messages as string[])[0],
+              });
+            });
+          } else toast.error(parsedError.message);
         },
       });
     } else {
@@ -52,9 +68,24 @@ export default function AuctionForm({ auction }: Props) {
           toast.success("Auction has been created successfully");
           route.push(`/auction/details/${data.auctionId}`);
         },
-        onError: (error) => {
-          console.log(error);
-          toast.error("Auction has not been created successfully - " + error);
+        //eslint-disable-next-line @typescript-eslint/no-explicit-any
+        onError: (error: any) => {
+          let parsedError = error;
+          if (error instanceof Error) {
+            try {
+              parsedError = JSON.parse(error.message);
+            } catch {
+              parsedError = { type: "general", message: error.message };
+            }
+          }
+          if (parsedError.type == "ValidationFailure") {
+            Object.entries(parsedError.errors).forEach(([key, messages]) => {
+              const field = key.charAt(0).toLowerCase() + key.slice(1);
+              setError(field as keyof AuctionSchemaInput, {
+                message: (messages as string[])[0],
+              });
+            });
+          } else toast.error(parsedError.message);
         },
       });
     }
