@@ -8,7 +8,7 @@ import Link from "next/link";
 export default async function page({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: number }>;
 }) {
   const { id } = await params;
   return (
@@ -35,7 +35,7 @@ export default async function page({
         </Dropdown>
       </div>
 
-      <AuctionDetails />
+      <AuctionDetails id={id} />
     </div>
   );
 }

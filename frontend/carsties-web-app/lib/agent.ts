@@ -26,8 +26,6 @@ export const createAgent = async () => {
       switch (status) {
         case 400: // Bad request
           if (data.errors) {
-            // const errors = Object.values(data.errors).flat();
-            // throw errors;
             throw JSON.stringify({
               type: data.type,
               message: data.title,
